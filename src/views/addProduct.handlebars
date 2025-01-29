@@ -1,0 +1,19 @@
+<form action="http://localhost:8080/" method="post" enctype="multipart/form-data">
+    <input type="text" name="tile" placeholder="Product name" required>
+    <input type="text" name="description" placeholder="Description">
+    <input type="code" name="code" placeholder="Code" required>
+    <input type="number" name="price" placeholder="Price" required>
+    {{!-- Podria hacer que el status sea un checkbox? --}}
+    {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock)--}}
+    <input type="hidden" name="status" value="false">
+    <input type="checkbox" name="status" value="true">
+    <input type="number" name="stock" placeholder="Available quantity" required>
+    {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
+    <select>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+    </select>
+    <input type="file" name="prodImg">
+    <button type="submit">Send</button>
+</form>
