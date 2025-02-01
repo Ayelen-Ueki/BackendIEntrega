@@ -1,4 +1,4 @@
-<form action="http://localhost:8080/api/products/" method="POST" enctype="multipart/form-data">
+<form action="http://localhost:8080/api/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
     <input type="text" name="tile" placeholder="Product name" required>
     <input type="text" name="description" placeholder="Description">
     <input type="code" name="code" placeholder="Code" required>
