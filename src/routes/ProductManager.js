@@ -44,7 +44,7 @@ productsRouter.post("/", uploader.array("prodImg"), (req,res)=>{
 //Show product by id
 productsRouter.get("/:pid", (req, res)=>{
     initialize();
-    const pid = req.params;
+    const pid = req.params.pid;
     const product = products.find(p=>p.id ===pid);
 
     if(!product){
@@ -67,7 +67,7 @@ productsRouter.get("/:pid/edit",(req,res)=>{
 
 productsRouter.put("/:pid", (req,res)=>{
     initialize();
-    const pid = req.params;
+    const pid = req.params.pid;
     const prodIndex = products.findIndex(p => p.id === pid);
     if (productIndex === -1) {
         return res.status(404).send({ error: "Producto no encontrado" });
@@ -84,18 +84,21 @@ productsRouter.put("/:pid", (req,res)=>{
         cathegory : cathegory
     };
 
-    res.redirect("/");
+    res.redirect("products");
 })
 
 //Delete products
-
 productsRouter.delete("/:pid", (req,res)=>{
-    const pid = req.params
+    const pid = req.params.pid;
     const prodIndex = products.findIndex(p => p.id === pid);
+
+    if (prodIndex === -1) {
+        return res.status(404).json({ error: "Producto no encontrado" });
+    }
 
     products.splice(prodIndex,1)[0];
 
-    res.redirect("/");
+    res.redirect("products");
 })
 
 
