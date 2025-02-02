@@ -1,5 +1,5 @@
 import multer from "multer";
-import __dirname from "./dirname";
+import __dirname from "./dirname.js";
 import path from "path";
 import { callbackify } from "util";
 
