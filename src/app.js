@@ -1,7 +1,7 @@
 import express from "express";
 import { engine } from "express-handlebars";
-import cartsRouter from "./routes/CartsManager.js";
-import productsRouter from "./routes/ProductManager.js";
+import cartsRouter from "./routes/carts.router.js";
+import productsRouter from "./routes/products.router.js";
 
 const app = express();
 

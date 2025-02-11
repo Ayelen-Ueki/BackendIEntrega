@@ -1,20 +1,15 @@
 import express from "express";
 import uploader from "../utils/uploader.js";
-import { error } from "console";
-import fs from "fs";
 import crypto from "crypto";
+import ProductsManager from "../productsManager.js";
 
 
 const productsRouter = express.Router();
 
-const products = [];
-
-const productsFile = "../utils/products.json";
-
 //Show products
-productsRouter.get("/", (req, res)=>{
-    initialize();
-    res.render("products",{products, title: "Products list"});
+productsRouter.get("/", async (req, res)=>{
+    await ProductsManager.initialize();
+    res.render("products",{products: ProductsManager.products, title: "Products list"});
 })
 
 //Add new product
@@ -22,9 +17,8 @@ productsRouter.get("/AddProduct", (req, res)=>{
     res.render("addProduct",{ title: "Add Product"});
 })
 
-productsRouter.post("/", uploader.array("prodImg"), (req,res)=>{
-    initialize();
-
+productsRouter.post("/", uploader.array("prodImg"), async (req,res)=>{
+    await ProductsManager.initialize();
     const id = crypto.randomUUID();
     
     if(!req.file) return res.status(400).send({message: "Error al recuperar la imagen."});
@@ -38,16 +32,16 @@ productsRouter.post("/", uploader.array("prodImg"), (req,res)=>{
         res.status(400).send({error:"Error al recuperar los datos del producto."});
     }
     
-    products.push({id:id,title, description,code, price, status, stock, cathegory, thumbnail:{imgPath}});
-    saveProducts(products);
+    ProductsManager.products.push({id,title, description,code, price, status, stock, cathegory, thumbnail:{imgPath}});
+    await ProductsManager.saveProducts(ProductsManager.products);
     res.render("products", {title: "Product"});
 })
 
 //Show product by id
-productsRouter.get("/:pid", (req, res)=>{
-    initialize();
+productsRouter.get("/:pid", async(req, res)=>{
+    await ProductsManager.initialize();
     const pid = req.params.pid;
-    const product = products.find(p=>p.id ===pid);
+    const product = ProductsManager.products.find(p=>p.id ===pid);
 
     if(!product){
         return res.status(404).send({error: "Producto no encontrado"});
@@ -56,10 +50,10 @@ productsRouter.get("/:pid", (req, res)=>{
 })
 
 //Edit product
-productsRouter.get("/:pid/edit",(req,res)=>{
-    initialize();
+productsRouter.get("/:pid/edit",async (req,res)=>{
+    await ProductsManager.initialize();
     const pid = req.params.pid;
-    const product = products.find(p=>p.id ===pid);
+    const product = ProductsManager.products.find(p=>p.id ===pid);
 
     if(!product){
         return res.status(404).send({error: "Producto no encontrado"});
@@ -67,17 +61,17 @@ productsRouter.get("/:pid/edit",(req,res)=>{
     res.render("editProduct", {title: "Edit product"}, product);
 })
 
-productsRouter.put("/:pid", (req,res)=>{
-    initialize();
+productsRouter.put("/:pid", async(req,res)=>{
+    await ProductsManager.initialize();
     const pid = req.params.pid;
-    const prodIndex = products.findIndex(p => p.id === pid);
+    const prodIndex = ProductsManager.products.findIndex(p => p.id === pid);
     if (prodIndex === -1) {
         return res.status(404).send({ error: "Producto no encontrado" });
     }
     const{title, description, code, price, status, stock, cathegory} = req.body;
     
-    products[prodIndex] = {
-        id: products[prodIndex].id,
+    ProductsManager.products[prodIndex] = {
+        id: ProductsManager.products[prodIndex].id,
         title,
         description,
         code,
@@ -87,41 +81,26 @@ productsRouter.put("/:pid", (req,res)=>{
         cathegory
     };
 
+    await ProductsManager.saveProducts(ProductsManager.products);
+
     res.redirect("products");
 })
 
 //Delete products
-productsRouter.delete("/:pid", (req,res)=>{
+productsRouter.delete("/:pid", async(req,res)=>{
     const pid = req.params.pid;
-    const prodIndex = products.findIndex(p => p.id === pid);
+    const prodIndex = ProductsManager.products.findIndex(p => p.id === pid);
 
     if (prodIndex === -1) {
         return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    products.splice(prodIndex,1);
+    ProductsManager.products.splice(prodIndex,1);
+    await ProductsManager.saveProducts(ProductsManager.products);
 
     res.redirect("products");
 })
 
 
-//Retrieve products from json file
-const initialize = async() =>{
-    try {
-        const productsList = await fs.promises.readFile(productsFile,"utf-8");
-        products = JSON.parse(productsList);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-//To save products in json file
-const saveProducts = async(products)=>{
-    try {
-        await fs.promises.writeFile(productsFile,JSON.stringify(products),"utf-8");
-    } catch (error) {
-        console.error(error);   
-    }
-}
 
 export default productsRouter;
