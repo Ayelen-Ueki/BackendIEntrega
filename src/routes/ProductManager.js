@@ -12,12 +12,12 @@ const productsFile = "../utils/products.json";
 //Show products
 productsRouter.get("/", (req, res)=>{
     initialize();
-    res.render("products",{products, title: "Products list"})
+    res.render("products",{products, title: "Products list"});
 })
 
 //Add new product
 productsRouter.get("/AddProduct", (req, res)=>{
-    res.render("addProduct",{ title: "Add Product"})
+    res.render("addProduct",{ title: "Add Product"});
 })
 
 productsRouter.post("/", uploader.array("prodImg"), (req,res)=>{
