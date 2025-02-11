@@ -2,6 +2,8 @@ import express from "express";
 import uploader from "../utils/uploader.js";
 import { error } from "console";
 import fs from "fs";
+import crypto from "crypto";
+
 
 const productsRouter = express.Router();
 
@@ -23,7 +25,7 @@ productsRouter.get("/AddProduct", (req, res)=>{
 productsRouter.post("/", uploader.array("prodImg"), (req,res)=>{
     initialize();
 
-    const id = crypto.randomUUID;
+    const id = crypto.randomUUID();
     
     if(!req.file) return res.status(400).send({message: "Error al recuperar la imagen."});
 
@@ -37,7 +39,7 @@ productsRouter.post("/", uploader.array("prodImg"), (req,res)=>{
     }
     
     products.push({id:id,title, description,code, price, status, stock, cathegory, thumbnail:{imgPath}});
-    saveProducts(products)
+    saveProducts(products);
     res.render("products", {title: "Product"});
 })
 
@@ -69,19 +71,20 @@ productsRouter.put("/:pid", (req,res)=>{
     initialize();
     const pid = req.params.pid;
     const prodIndex = products.findIndex(p => p.id === pid);
-    if (productIndex === -1) {
+    if (prodIndex === -1) {
         return res.status(404).send({ error: "Producto no encontrado" });
     }
     const{title, description, code, price, status, stock, cathegory} = req.body;
     
     products[prodIndex] = {
-        title : title,
-        description : description,
-        code : code,
-        price : price,
-        status : status,
-        stock : stock,
-        cathegory : cathegory
+        id: products[prodIndex].id,
+        title,
+        description,
+        code,
+        price,
+        status,
+        stock,
+        cathegory
     };
 
     res.redirect("products");
@@ -96,7 +99,7 @@ productsRouter.delete("/:pid", (req,res)=>{
         return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    products.splice(prodIndex,1)[0];
+    products.splice(prodIndex,1);
 
     res.redirect("products");
 })
