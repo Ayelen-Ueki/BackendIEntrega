@@ -5,6 +5,11 @@ import CartsManager from "../cartsManager.js";
 
 const cartsRouter = express.Router();
 
+cartsRouter.get("/", async(req,res)=>{
+    await CartsManager.initialize();
+    res.render("carts",{carts: CartsManager.carts, title:"Carts"})
+})
+
 //Create a new cart and store it in carts
 cartsRouter.post("/", async(req, res)=>{
     await CartsManager.initialize();
@@ -12,6 +17,7 @@ cartsRouter.post("/", async(req, res)=>{
     await CartsManager.cart.push({id:id, products:[]});
     CartsManager.carts.push(CartsManager.cart[id]);
     res.status(201).send({ message: "Cart created successfully" });
+    res.render("carts",{carts: CartsManager.carts, title:"Carts"})
 })
 
 //Get cart products by cart id
@@ -49,7 +55,7 @@ cartsRouter.post("/:cid/products/:pid",async (req,res)=>{
         existingProduct.quantity +1;
     }else{
         cart.products.push({id:pid, quantity:1});
-    }
+    }   
     CartsManager.createCart(CartsManager.carts);
     res.redirect(`/cart/${cid}`);
 })

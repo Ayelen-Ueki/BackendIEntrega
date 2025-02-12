@@ -1,8 +1,14 @@
 <div>
-    <a href="/AddProduct">Add product</a>
+    <form action="http://localhost:8080/api/products/AddProduct" method="GET">
+        <button type="submit">Add product</button>
+    </form>
     <ul>
         {{#each products}}
-        <li>{{this.title}}</li>
+        <li>
+            <form action="http://localhost:8080/api/products/{{this.id}}" method="GET">
+                <button type="submit">{{this.tile}}</button>
+            </form>
+        </li>
         <li>{{this.description}}</li>
         <li>{{this.code}}</li>
         <li>{{this.price}}</li>
@@ -11,8 +17,6 @@
         <li>{{this.cathegory}}</li>
         <li>{{this.prodImg}}</li>
         <br>
-        <a href="/{{products.id}}/edit">Edit product</a>
-        <a href="/{{products.id}}/delete">Delete product</a>
         {{/each}}
     </ul>
 </div>

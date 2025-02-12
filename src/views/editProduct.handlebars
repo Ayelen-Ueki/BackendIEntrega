@@ -1,13 +1,13 @@
-<form action="http://localhost:8080/api/products/{{product.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
-    <input type="text" name="tile" placeholder="Product name" required>
-    <input type="text" name="description" placeholder="Description">
-    <input type="code" name="code" placeholder="Code" required>
-    <input type="number" name="price" placeholder="Price" required>
+<form action="http://localhost:8080/api/products/{{product.id}}" method="PUT" enctype="multipart/form-data">
+    <input type="text" name="tile" placeholder={{product.title}} required>
+    <input type="text" name="description" placeholder={{product.description}}>
+    <input type="code" name="code" placeholder={{product.code}} required>
+    <input type="number" name="price" placeholder={{product.price}} required>
     {{!-- Podria hacer que el status sea un checkbox? --}}
     {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock)--}}
     <input type="hidden" name="status" value="false">
     <input type="checkbox" name="status" value="true">
-    <input type="number" name="stock" placeholder="Available quantity" required>
+    <input type="number" name="stock" placeholder={{product.title}} required>
     {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
     <select>
         <option value="A">A</option>

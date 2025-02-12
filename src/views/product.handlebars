@@ -1,0 +1,21 @@
+<div>
+    <ul>
+        {{#each product}}
+        <li>{{this.title}}</li>
+        <li>{{this.description}}</li>
+        <li>{{this.code}}</li>
+        <li>{{this.price}}</li>
+        <li>{{this.status}}</li>
+        <li>{{this.stock}}</li>
+        <li>{{this.cathegory}}</li>
+        <li>{{this.prodImg}}</li>
+        <br>
+    <form action="http://localhost:8080/api/products/{{this.id}}/edit" method="GET">
+        <button type="submit">Edit product</button>
+    </form>
+        <form action="http://localhost:8080/api/products/{{this.id}}" method="DELETE">
+        <button type="submit">Delete product</button>
+    </form>
+        {{/each}}
+    </ul>
+</div>

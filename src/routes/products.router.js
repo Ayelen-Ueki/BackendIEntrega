@@ -46,7 +46,7 @@ productsRouter.get("/:pid", async(req, res)=>{
     if(!product){
         return res.status(404).send({error: "Producto no encontrado"});
     }
-    res.render("products", {products: product, title: "Product"});
+    res.render("product", {product: product, title: "Product"});
 })
 
 //Edit product
@@ -58,7 +58,7 @@ productsRouter.get("/:pid/edit",async (req,res)=>{
     if(!product){
         return res.status(404).send({error: "Producto no encontrado"});
     }
-    res.render("editProduct", {products: product, title: "Edit product"});
+    res.render("editProduct", {product: product, title: "Edit product"});
 })
 
 productsRouter.put("/:pid", async(req,res)=>{
