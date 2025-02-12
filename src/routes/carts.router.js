@@ -49,7 +49,7 @@ cartsRouter.post("/:cid/products/:pid",async (req,res)=>{
         res.status(404).send({message:"Product not found"});
     }
 
-    const existingProduct = cart.products.find(p => p.id === pid);
+    let existingProduct = cart.products.find(p => p.id === pid);
 
     if(existingProduct){
         existingProduct.quantity +1;

@@ -8,7 +8,7 @@ class CartsManager{
     
     static products=[];
     
-    static cartsFile = "../data/carts.json";
+    static cartsFile = "./data/carts.json";
 
     //Retrieve products from json file
     static initialize = async() =>{

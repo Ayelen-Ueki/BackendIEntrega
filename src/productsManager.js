@@ -1,6 +1,7 @@
 import fs from "fs";
 
-const productsFile = "../data/products.json";
+const productsFile = "./data/products.json";
+
 
 
 class ProductsManager{
@@ -18,8 +19,12 @@ class ProductsManager{
     //To save products in json file
     static saveProducts = async(products)=>{
         try {
+            
             await fs.promises.writeFile(productsFile,JSON.stringify(products),"utf-8");
+            
+
         } catch (error) {
+            
             console.error(error);   
         }
     }
