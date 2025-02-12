@@ -34,7 +34,7 @@ productsRouter.post("/", uploader.array("prodImg"), async (req,res)=>{
     
     ProductsManager.products.push({id,title, description,code, price, status, stock, cathegory, thumbnail:{imgPath}});
     await ProductsManager.saveProducts(ProductsManager.products);
-    res.render("products", {title: "Product"});
+    res.render("products", {products: ProductsManager.products, title: "Products List"});
 })
 
 //Show product by id
@@ -46,7 +46,7 @@ productsRouter.get("/:pid", async(req, res)=>{
     if(!product){
         return res.status(404).send({error: "Producto no encontrado"});
     }
-    res.render("products", {title: "Product"});
+    res.render("products", {products: product, title: "Product"});
 })
 
 //Edit product
@@ -58,7 +58,7 @@ productsRouter.get("/:pid/edit",async (req,res)=>{
     if(!product){
         return res.status(404).send({error: "Producto no encontrado"});
     }
-    res.render("editProduct", {title: "Edit product"}, product);
+    res.render("editProduct", {products: product, title: "Edit product"});
 })
 
 productsRouter.put("/:pid", async(req,res)=>{
@@ -88,6 +88,7 @@ productsRouter.put("/:pid", async(req,res)=>{
 
 //Delete products
 productsRouter.delete("/:pid", async(req,res)=>{
+    await ProductsManager.initialize();
     const pid = req.params.pid;
     const prodIndex = ProductsManager.products.findIndex(p => p.id === pid);
 

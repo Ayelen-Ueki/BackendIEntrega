@@ -50,7 +50,6 @@ cartsRouter.post("/:cid/products/:pid",async (req,res)=>{
     }else{
         cart.products.push({id:pid, quantity:1});
     }
-
     CartsManager.createCart(CartsManager.carts);
     res.redirect(`/cart/${cid}`);
 })
