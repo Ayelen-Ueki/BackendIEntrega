@@ -1,11 +1,14 @@
 <div>
-    <form>
-        
+    <form action="http://localhost:8080/api/carts/" method="POST">
+        <button type="submit">Create new Cart</button>
     </form>
     <ul>
         {{#each carts}}
-        <li>{{this.id}}</li>
-        <li>{{this.products}}</li>
+        <li>
+            <form action="http://localhost:8080/api/carts/{{this.id}}" method="GET">
+                <button type="submit">{{this.id}}</button>
+            </form>
+        </li>
         <br>
         {{/each}}
     </ul>

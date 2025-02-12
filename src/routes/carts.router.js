@@ -2,6 +2,7 @@ import express from "express";
 import uploader from "../utils/uploader.js";
 import crypto from "crypto";
 import CartsManager from "../cartsManager.js";
+import { title } from "process";
 
 const cartsRouter = express.Router();
 
@@ -24,12 +25,11 @@ cartsRouter.post("/", async(req, res)=>{
 cartsRouter.get("/cid",async(req,res)=>{
     await CartsManager.initialize();
     const cid = req.params.cid;
-    const cartProds = CartsManager.carts.find(c => c.id === cid );
+    const cart = CartsManager.carts.find(c => c.id === cid );
     if (!cart) {
         return res.status(404).send({ message: "Cart not found" });
     }
-    res.render("cart",{cartProds});
-
+    res.render("cartProds",{cart, title:"Cart Products"});
 })
 
 //Add products to a cart
