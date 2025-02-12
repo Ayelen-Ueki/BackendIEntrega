@@ -6,14 +6,38 @@
     {{!-- Podria hacer que el status sea un checkbox? --}}
     {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock)--}}
     <input type="hidden" name="status" value="false">
-    <input type="checkbox" name="status" value="true">
+    <input type="checkbox" name="status" value="true" {{#if product.status}}checked{{/if}}>
     <input type="number" name="stock" placeholder={{product.title}} required>
     {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
-    <select>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
+    <select name="cathegory">
+        <option value="A" {{#if (eq product.category "A")}}selected{{/if}}>A</option>
+        <option value="B" {{#if (eq product.category "B")}}selected{{/if}}>B</option>
+        <option value="C" {{#if (eq product.category "C")}}selected{{/if}}>C</option>
     </select>
     <input type="file" name="prodImg">
     <button type="submit">Edit</button>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const stockInput = document.querySelector('input[name="stock"]');
+        const statusCheckbox = document.querySelector('input[name="status"][type="checkbox"]');
+
+        if (stockInput && statusCheckbox) {
+            stockInput.addEventListener('input', () => {
+                if (parseInt(stockInput.value) === 0) {
+                    statusCheckbox.checked = false;
+                } else {
+                    statusCheckbox.checked = true;
+                }
+            });
+
+            // Set initial status based on stock value
+            if (parseInt(stockInput.value) === 0) {
+                statusCheckbox.checked = false;
+            } else {
+                statusCheckbox.checked = true;
+            }
+        }
+    });
+</script>
