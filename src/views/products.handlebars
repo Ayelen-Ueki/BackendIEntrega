@@ -6,7 +6,7 @@
         {{#each products}}
         <li>
             <form action="http://localhost:8080/api/products/{{this.id}}" method="GET">
-                <button type="submit">{{this.tile}}</button>
+                <button type="submit">{{this.title}}</button>
             </form>
         </li>
         <li>{{this.description}}</li>
@@ -14,8 +14,10 @@
         <li>{{this.price}}</li>
         <li>{{this.status}}</li>
         <li>{{this.stock}}</li>
-        <li>{{this.cathegory}}</li>
-        <li>{{this.prodImg}}</li>
+        <li>{{this.category}}</li>
+        <li>
+            <img src="{{this.thumbnail.imgPath}}" alt="{{this.title}}" width="100" height="100">
+        </li>
 
         <br>
         {{/each}}

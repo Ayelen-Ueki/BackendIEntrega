@@ -1,21 +1,38 @@
 <div>
     <ul>
-        {{#each product}}
-        <li>{{this.title}}</li>
-        <li>{{this.description}}</li>
-        <li>{{this.code}}</li>
-        <li>{{this.price}}</li>
-        <li>{{this.status}}</li>
-        <li>{{this.stock}}</li>
-        <li>{{this.cathegory}}</li>
-        <li>{{this.prodImg}}</li>
+        <li>{{product.title}}</li>
+        <li>{{product.description}}</li>
+        <li>{{product.code}}</li>
+        <li>{{product.price}}</li>
+        <li>{{product.status}}</li>
+        <li>{{product.stock}}</li>
+        <li>{{product.category}}</li>
+        <li>
+            <img src="{{product.thumbnail.imgPath}}" alt="{{product.title}}" width="100" height="100">
+        </li>
         <br>
-    <form action="http://localhost:8080/api/products/{{this.id}}/edit" method="GET">
+    <form action="http://localhost:8080/api/products/{{product.id}}/edit" method="GET">
         <button type="submit">Edit product</button>
     </form>
-        <form action="http://localhost:8080/api/products/{{this.id}}" method="DELETE">
-        <button type="submit">Delete product</button>
-    </form>
-        {{/each}}
+        <button onclick="deleteProduct('{{product.id}}')">Delete product</button>
     </ul>
 </div>
+
+{{!-- To handle product deletion  --}}
+<script>
+    async function deleteProduct(productId) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                window.location.href = "http://localhost:8080/api/products"; // Redirect after successful deletion
+            } else {
+                alert('Error deleting product');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error deleting product');
+        }
+    }
+</script>

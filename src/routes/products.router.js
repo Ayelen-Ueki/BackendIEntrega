@@ -21,18 +21,19 @@ productsRouter.post("/", uploader.array("prodImg"), async (req,res)=>{
     await ProductsManager.initialize();
     const id = crypto.randomUUID();
     
-    if(!req.file) return res.status(400).send({message: "Error al recuperar la imagen."});
+    if(!req.files || req.files.length === 0) {
+        return res.status(400).send({message: "Error al recuperar la imagen."});
+    }
+    const{title, description, code, price, status, stock, category} = req.body;
 
-    const{title, description, code, price, status, stock, cathegory} = req.body;
-
-    const imgPath ="/img/" + req.file.filename;
+    const imgPath ="/img/"+ req.files[0].filename;
 
     //Es mejor manejar los campos requeridos desde aca o solo en el formulario con "required"?
     if(!title, !code, !price,!stock){
         res.status(400).send({error:"Error al recuperar los datos del producto."});
     }
     
-    ProductsManager.products.push({id,title, description,code, price, status, stock, cathegory, thumbnail:{imgPath}});
+    ProductsManager.products.push({id,title, description,code, price, status, stock, category, thumbnail:{imgPath}});
     await ProductsManager.saveProducts(ProductsManager.products);
     res.render("products", {products: ProductsManager.products, title: "Products List"});
 })
@@ -68,7 +69,7 @@ productsRouter.put("/:pid", async(req,res)=>{
     if (prodIndex === -1) {
         return res.status(404).send({ error: "Producto no encontrado" });
     }
-    const{title, description, code, price, status, stock, cathegory} = req.body;
+    const{title, description, code, price, status, stock, category} = req.body;
     
     ProductsManager.products[prodIndex] = {
         id: ProductsManager.products[prodIndex].id,
@@ -78,12 +79,12 @@ productsRouter.put("/:pid", async(req,res)=>{
         price,
         status,
         stock,
-        cathegory
+        category
     };
 
     await ProductsManager.saveProducts(ProductsManager.products);
 
-    res.redirect("products");
+    res.redirect("products", {products:ProductsManager.products});
 })
 
 //Delete products
@@ -99,7 +100,7 @@ productsRouter.delete("/:pid", async(req,res)=>{
     ProductsManager.products.splice(prodIndex,1);
     await ProductsManager.saveProducts(ProductsManager.products);
 
-    res.redirect("products");
+    res.json({ message: "Product deleted successfully" });
 })
 
 

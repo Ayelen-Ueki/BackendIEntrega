@@ -7,7 +7,7 @@
     {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock)--}}
     <input type="hidden" name="status" value="false">
     <input type="checkbox" name="status" value="true" {{#if product.status}}checked{{/if}}>
-    <input type="number" name="stock" placeholder={{product.title}} required>
+    <input type="number" name="stock" placeholder={{product.stock}} required>
     {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
     <select name="cathegory">
         <option value="A" {{#if (eq product.category "A")}}selected{{/if}}>A</option>
