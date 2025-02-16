@@ -1,21 +1,56 @@
-<form action="http://localhost:8080/api/products/{{product.id}}" method="PUT" enctype="multipart/form-data">
-    <input type="text" name="tile" placeholder={{product.title}} required>
-    <input type="text" name="description" placeholder={{product.description}}>
-    <input type="code" name="code" placeholder={{product.code}} required>
-    <input type="number" name="price" placeholder={{product.price}} required>
+<script>
+    async function updateProduct(productId) {
+        const formData = new FormData(document.getElementById(`editForm-${productId}`));
+        
+        try {
+            const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                window.location.href = "http://localhost:8080/api/products"; // Redirect after successful update
+            } else {
+                alert('Error updating product');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error updating product');
+        }
+    }
+</script>
+
+<form id="editForm-{{product.id}}" action="http://localhost:8080/api/products/{{product.id}}" method="POST" enctype="multipart/form-data">
+    <p>Product: </p> 
+    <input type="text" name="title" value="{{product.title}}" required>
+    <p>What is it? </p>
+    <input type="text" name="description" value="{{product.description}}">
+    <p>Code: </p>
+    <input type="code" name="code" value="{{product.code}}" required>
+    <p>Price: </p>
+    <input type="number" name="price" value="{{product.price}}" required>
     {{!-- Podria hacer que el status sea un checkbox? --}}
-    {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock)--}}
+    {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock) --}}
+    <p>Status: </p>
     <input type="hidden" name="status" value="false">
     <input type="checkbox" name="status" value="true" {{#if product.status}}checked{{/if}}>
-    <input type="number" name="stock" placeholder={{product.stock}} required>
+    <p>Available stock: </p>
+    <input type="number" name="stock" value="{{product.stock}}" required>
     {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
-    <select name="cathegory">
-        <option value="A" {{#if (eq product.category "A")}}selected{{/if}}>A</option>
-        <option value="B" {{#if (eq product.category "B")}}selected{{/if}}>B</option>
-        <option value="C" {{#if (eq product.category "C")}}selected{{/if}}>C</option>
+    <p>Category: </p>
+    <select name="category">
+        <option value="A" {{#if product.category}} {{#ifEquals product.category "A"}}selected{{/ifEquals}} {{/if}}>A</option>
+        <option value="B" {{#if product.category}} {{#ifEquals product.category "B"}}selected{{/ifEquals}} {{/if}}>B</option>
+        <option value="C" {{#if product.category}} {{#ifEquals product.category "C"}}selected{{/ifEquals}} {{/if}}>C</option>
     </select>
+    <br><br>
     <input type="file" name="prodImg">
-    <button type="submit">Edit</button>
+    <br><br>
+    <img src="{{product.thumbnail.imgPath}}" alt="{{product.title}}" width="100" height="100">
+    <br><br>
+    <button type="submit">Save</button>
 </form>
 
 <script>

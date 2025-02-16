@@ -62,46 +62,64 @@ productsRouter.get("/:pid/edit",async (req,res)=>{
     res.render("editProduct", {product: product, title: "Edit product"});
 })
 
-productsRouter.put("/:pid", async(req,res)=>{
+productsRouter.post("/:pid",uploader.array("prodImg"), async(req,res)=>{
     await ProductsManager.initialize();
     const pid = req.params.pid;
     const prodIndex = ProductsManager.products.findIndex(p => p.id === pid);
     if (prodIndex === -1) {
         return res.status(404).send({ error: "Producto no encontrado" });
     }
-    const{title, description, code, price, status, stock, category} = req.body;
-    
-    ProductsManager.products[prodIndex] = {
-        id: ProductsManager.products[prodIndex].id,
-        title,
-        description,
-        code,
-        price,
-        status,
-        stock,
-        category
-    };
+    const { title, description, code, price, status, stock, category } = req.body;
+    let product = ProductsManager.products[prodIndex];
+
+    // Update only the fields that are provided
+    if (title) product.title = title;
+    if (description) product.description = description;
+    if (code) product.code = code;
+    if (price) product.price = price;
+    if (status) product.status = status;
+    if (stock) product.stock = stock;
+    if (category) product.category = category;
+
+    // Update the thumbnail only if a new file is uploaded
+    if (req.file) {
+        product.thumbnail = { imgPath: req.file.path };
+    }
+
+    ProductsManager.products[prodIndex] = product;
 
     await ProductsManager.saveProducts(ProductsManager.products);
-
-    res.redirect("products", {products:ProductsManager.products});
+    res.json({ message: "Product edited successfully" });
 })
 
 //Delete products
-productsRouter.delete("/:pid", async(req,res)=>{
+productsRouter.delete("/:pid", async (req, res) => {
     await ProductsManager.initialize();
     const pid = req.params.pid;
     const prodIndex = ProductsManager.products.findIndex(p => p.id === pid);
-
+    
     if (prodIndex === -1) {
-        return res.status(404).json({ error: "Producto no encontrado" });
+        throw new Error("Producto no encontrado");
     }
 
-    ProductsManager.products.splice(prodIndex,1);
+    const product = ProductsManager.products[prodIndex];
+
+    // Check if the product has an associated image and delete it
+    if (product.thumbnail && product.thumbnail.imgPath) {
+        await ProductsManager.deleteFile(product.thumbnail.imgPath);
+    }
+
+    ProductsManager.products.splice(prodIndex, 1);
     await ProductsManager.saveProducts(ProductsManager.products);
 
-    res.json({ message: "Product deleted successfully" });
-})
+    try {
+        await ProductsManager.deleteProduct(pid);
+        res.json({ message: "Product deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 
 

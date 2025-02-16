@@ -1,21 +1,29 @@
-<form id="productForm" action="http://localhost:8080/api/products/" method="POST" enctype="multipart/form-data">
+<form id="productForm" action="http://localhost:8080/api/products/" method="POST" enctype="multipart/form-data">    
+    <p>Product: </p>    
     <input type="text" name="title" placeholder="Product name" required>
+    <p>What is it? </p>
     <input type="text" name="description" placeholder="Description">
+    <p>Code: </p>
     <input type="code" name="code" placeholder="Code" required>
+    <p>Price: </p>
     <input type="number" name="price" placeholder="Price" required>
     {{!-- Podria hacer que el status sea un checkbox? --}}
     {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock)--}}
-    <label for="status">In Stock:</label>
-        <input type="checkbox" id="status" name="status" value="true">
+    <p>Status: </p>
+    <input type="checkbox" id="status" name="status" value="true">
+    <p>Available stock: </p>
     <input type="number" name="stock" placeholder="Available quantity" required>
     {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
+    <p>Category: </p>
     <select name="category">
         <option value="A">A</option>
         <option value="B">B</option>
         <option value="C">C</option>
     </select>
+    <br><br>
     <input type="file" name="prodImg">
-    <button type="submit">Send</button>
+    <br><br>
+    <button type="submit">Save</button>
 </form>
 {{!-- To handle status check --}}
     <script>

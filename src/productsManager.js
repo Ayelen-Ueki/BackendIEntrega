@@ -35,6 +35,20 @@ class ProductsManager{
             console.error(error);   
         }
     }
+
+    // Utility function to delete a file
+    static deleteFile = async (filePath) => {
+        const absolutePath = path.resolve(filePath);
+        try {
+            await fs.promises.unlink(absolutePath);
+            console.log('File deleted successfully');
+        } catch (err) {
+            console.error('Error deleting file:', err);
+            throw new Error("Error deleting file");
+        }
+    };
+
+
 }
 
 export default ProductsManager;
