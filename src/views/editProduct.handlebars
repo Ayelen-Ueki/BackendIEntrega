@@ -76,3 +76,17 @@
         }
     });
 </script>
+
+{{!-- To handle status check --}}
+    <script>
+        document.getElementById('editForm-{{product.id}}').addEventListener('submit', function(event) {
+            // Get the checkbox element
+            const statusCheckbox = document.getElementById('status');
+            
+            // If the checkbox is checked, set the status field value to true, otherwise false
+            if (!statusCheckbox.checked) {
+                statusCheckbox.value = 'false';
+                statusCheckbox.checked = true; // Ensure the checkbox is always checked before submitting
+            }
+        });
+    </script>

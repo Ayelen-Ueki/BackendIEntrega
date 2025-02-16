@@ -2,7 +2,7 @@
     <form action="http://localhost:8080/api/products/AddProduct" method="GET">
         <button type="submit">Add product</button>
     </form>
-    <ul>
+    <ul style="list-style-type: none">
         {{#each products}}
         <li>
             <form action="http://localhost:8080/api/products/{{this.id}}" method="GET">
@@ -11,7 +11,7 @@
         </li>
         <li>{{this.description}}</li>
         <li>{{this.code}}</li>
-        <li>{{this.price}}</li>
+        <li>${{this.price}}</li>
         <li>{{this.status}}</li>
         <li>{{this.stock}}</li>
         <li>{{this.category}}</li>
@@ -19,7 +19,7 @@
             <img src="{{this.thumbnail.imgPath}}" alt="{{this.title}}" width="100" height="100">
         </li>
 
-        <br>
+        <br><br>
         {{/each}}
     </ul>
 </div>

@@ -1,5 +1,5 @@
 <div>
-    <ul>
+    <ul style="list-style-type: none">
         <li>{{product.title}}</li>
         <li>{{product.description}}</li>
         <li>{{product.code}}</li>
@@ -10,7 +10,7 @@
         <li>
             <img src="{{product.thumbnail.imgPath}}" alt="{{product.title}}" width="100" height="100">
         </li>
-        <br>
+        <br><br>
     <form action="http://localhost:8080/api/products/{{product.id}}/edit" method="GET">
         <button type="submit">Edit product</button>
     </form>
