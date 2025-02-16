@@ -97,7 +97,7 @@ productsRouter.delete("/:pid", async (req, res) => {
     await ProductsManager.initialize();
     const pid = req.params.pid;
     const prodIndex = ProductsManager.products.findIndex(p => p.id === pid);
-    
+
     if (prodIndex === -1) {
         throw new Error("Producto no encontrado");
     }
@@ -113,7 +113,6 @@ productsRouter.delete("/:pid", async (req, res) => {
     await ProductsManager.saveProducts(ProductsManager.products);
 
     try {
-        await ProductsManager.deleteProduct(pid);
         res.json({ message: "Product deleted successfully" });
     } catch (error) {
         console.error(error);
