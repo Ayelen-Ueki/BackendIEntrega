@@ -44,8 +44,17 @@ app.use("/realtimeproducts", websocketRouter);
 
 app.use("/api/carts", cartsRouter);
 
+const products =[];
 //Websockets
 io.on("connection",(socket)=>{
+    socket.emit("products list", products);
+
+    socket.on("new product",(productData)=>{
+        //Pusheamos los mensajes que se van enviando a un array de mensajes
+        products.push(productData);
+
+        io.emit("broadcast new product", productData);
+    })
 
 })
 
