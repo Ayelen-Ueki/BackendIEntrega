@@ -1,0 +1,21 @@
+<div>
+    <form action="http://localhost:8080/api/products/AddProduct" method="GET">
+        <button type="submit">Add product</button>
+    </form>
+    <ul style="list-style-type: none">
+        {{#each products}}
+        <li>{{this.title}}</li>
+        <li>{{this.description}}</li>
+        <li>{{this.code}}</li>
+        <li>${{this.price}}</li>
+        <li>{{this.status}}</li>
+        <li>{{this.stock}}</li>
+        <li>{{this.category}}</li>
+        <li>
+            <img src="{{this.thumbnail.imgPath}}" alt="{{this.title}}" width="100" height="100">
+        </li>
+
+        <br><br>
+        {{/each}}
+    </ul>
+</div>
