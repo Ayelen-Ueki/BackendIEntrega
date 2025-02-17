@@ -22,7 +22,7 @@ const main = async() =>{
         });
     })
 
-    const productForm = document.getElementById(productForm);
+    const productSocketForm = document.getElementById(productSocketForm);
     const title = document.getElementById(title);
     const description = document.getElementById(description);
     const code = document.getElementById(code);
@@ -32,7 +32,7 @@ const main = async() =>{
     const category = document.getElementById(category);
     const image = document.getElementById(image);
 
-    productForm.addEventListener("submit", (event) => {
+    productSocketForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const title = title.value;
         const description = description.value;
@@ -57,7 +57,7 @@ const main = async() =>{
 
     socket.on("broadcast new product", ({title, description, code, price, status, stock, category, image})=>{
         //Enviamos los mensajes al html
-        const producstList = document.getElementById("product list");
+        const productsList = document.getElementById("product list");
         productsList.innerHTML += `<ul style="list-style-type: none">
         <li>${title}</li>
         <li>${description}</li>
@@ -73,3 +73,5 @@ const main = async() =>{
     </ul>`
     });
 }
+
+main();
