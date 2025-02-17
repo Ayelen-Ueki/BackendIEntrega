@@ -1,5 +1,4 @@
 import express from "express";
-import uploader from "../utils/uploader.js";
 
 const websocketRouter = express.Router();
 

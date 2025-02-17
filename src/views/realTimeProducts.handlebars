@@ -13,7 +13,7 @@
         <p>Status: </p>
         <input type="checkbox" id="status" name="status" value="true">
         <p>Available stock: </p>
-        <input type="number" name="stock" placeholder="Available quantity" required>
+        <input id="stock" type="number" name="stock" placeholder="Available quantity" required>
         {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
         <p>Category: </p>
         <select id="category" name="category">
@@ -48,4 +48,4 @@
 
 {{!-- Websocket --}}
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+<script src="../../js/index.js"></script>

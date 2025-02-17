@@ -16,6 +16,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = 8080;
+const port = 8081;
 
 app.use(express.urlencoded({extended:true}));
 
@@ -60,4 +61,8 @@ io.on("connection",(socket)=>{
 
 app.listen(PORT, ()=>{
     console.log("Servidor iniciado en: http://localhost:8080");
+});
+
+server.listen(port, ()=>{
+    console.log("Servidor iniciado en: http://localhost:8081");
 });
