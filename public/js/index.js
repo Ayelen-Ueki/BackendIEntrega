@@ -27,7 +27,7 @@ const main = () =>{
     const inputDescription = document.getElementById("formDescription");
     const inputCode = document.getElementById("formCode");
     const inputPrice = document.getElementById("formPrice");
-    const inputStatus = document.getElementById("formtatus");
+    const inputStatus = document.getElementById("formStatus");
     const inputStock = document.getElementById("formStock");
     const inputCategory = document.getElementById("formCategory");
     const inputImage = document.getElementById("formImage");
@@ -38,7 +38,7 @@ const main = () =>{
         const newDescription = inputDescription.value;
         const newCode = inputCode.value;
         const newPrice = inputPrice.value;
-        const newStatus = inputStatus.checked;
+        const newStatus = inputStatus.checked ? 'true' : 'false';
         const newStock = inputStock.value;
         const newCategory = inputCategory.value;
         const newImage = inputImage.value;
@@ -57,7 +57,7 @@ const main = () =>{
 
     socket.on("broadcast new product", ({title, description, code, price, status, stock, category, image})=>{
         //Enviamos los mensajes al html
-        const productsList = document.getElementById("product list");
+        const productsList = document.getElementById("productsList");
         productsList.innerHTML += `<ul style="list-style-type: none">
         <li>${title}</li>
         <li>${description}</li>

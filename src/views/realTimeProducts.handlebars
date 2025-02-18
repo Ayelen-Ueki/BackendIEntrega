@@ -33,18 +33,18 @@
 </div>
 
 {{!-- To handle status check --}}
-    <script>
-        document.getElementById('productSocketForm').addEventListener('submit', function(event) {
-            // Get the checkbox element
-            const statusCheckbox = document.getElementById('formStatus');
-            
-            // If the checkbox is checked, set the status field value to true, otherwise false
-            if (!statusCheckbox.checked) {
-                statusCheckbox.value = 'false';
-                statusCheckbox.checked = true; // Ensure the checkbox is always checked before submitting
-            }
-        });
-    </script>
+<script>
+    document.getElementById('productSocketForm').addEventListener('submit', function(event) {
+        // Get the checkbox element
+        const statusCheckbox = document.getElementById('formStatus');
+        // Set a hidden field for status value to ensure it is always submitted
+        const statusHiddenInput = document.createElement('input');
+        statusHiddenInput.type = 'hidden';
+        statusHiddenInput.name = 'status';
+        statusHiddenInput.value = statusCheckbox.checked ? 'true' : 'false';
+        this.appendChild(statusHiddenInput);
+    });
+</script>
 
 {{!-- Websocket --}}
 <script src="/socket.io/socket.io.js"></script>
