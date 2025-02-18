@@ -52,7 +52,7 @@ const main = () =>{
         inputCategory.value = "";
         inputImage.value = "";
 
-        socket.emit("new product", {title, description, code, price, status, stock, category, image})
+        socket.emit("new product", {newTitle, newDescription, newCode, newPrice, newStatus, newStock, newCategory, newImage})
     });
 
     socket.on("broadcast new product", ({title, description, code, price, status, stock, category, image})=>{
