@@ -43,6 +43,10 @@ const main = () =>{
         const newCategory = inputCategory.value;
         const newImage = inputImage.value;
 
+        const file = inputImage.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+        const newImage = reader.result; // Base64 encoded image
         inputTitle.value = "";
         inputDescription.value = "";
         inputCode.value = "";
@@ -53,11 +57,24 @@ const main = () =>{
         inputImage.value = "";
 
         socket.emit("new product", {newTitle, newDescription, newCode, newPrice, newStatus, newStock, newCategory, newImage})
+        };
+        reader.readAsDataURL(file);
     });
 
     socket.on("broadcast new product", ({title, description, code, price, status, stock, category, image})=>{
         //Enviamos los mensajes al html
         const productsList = document.getElementById("productsList");
+        productsList.innerHTML += `<ul style="list-style-type: none">
+        <li>${title}</li>
+        <li>${description}</li>
+        <li>${code}</li>
+        <li>$${price}</li>
+        <li>${status}</li>
+        <li>${stock}</li>
+        <li>${category}</li>
+        <li><img src="${image}" alt="${title}" width="100" height="100"></li>
+        <br><br>
+        </ul>`;
     });
 };
 
