@@ -13,6 +13,7 @@ import Handlebars from "handlebars";
 
 const app = express();
 const server = http.createServer(app);
+//websocket
 const io = new Server(server);
 
 const PORT = 8080;
@@ -25,28 +26,28 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //Handlebars config
-
 app.engine("handlebars", engine());
-
 app.set("view engine", "handlebars");
+app.set('views', path.join(__dirname, '/src/views'));
 
 // Register the ifEquals helper
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
     return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
 
-app.set('views', path.join(__dirname, '/src/views'));
-
+//endpoints
 app.use("/api/products", productsRouter);
 
 app.use("/products", indexRouter);
 
-app.use("/realtimeproducts", websocketRouter);
-
 app.use("/api/carts", cartsRouter);
 
+//Websocket endpoint
+app.use("/realtimeproducts", websocketRouter);
+
 const products =[];
-//Websockets
+
+//Websocket config
 io.on("connection",(socket)=>{
     socket.emit("products list", products);
 

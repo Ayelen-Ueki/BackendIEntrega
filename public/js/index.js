@@ -1,4 +1,4 @@
-//To handle cliengt input on websocket form
+//To handle client input on websocket form
 const socket = io();
 
 const main = () =>{
@@ -23,34 +23,34 @@ const main = () =>{
     })
 
     const productSocketForm = document.getElementById("productSocketForm");
-    const title = document.getElementById("title");
-    const description = document.getElementById("description");
-    const code = document.getElementById("code");
-    const price = document.getElementById("price");
-    const status = document.getElementById("status");
-    const stock = document.getElementById("stock");
-    const category = document.getElementById("category");
-    const image = document.getElementById("image");
+    const inputTitle = document.getElementById("formTitle");
+    const inputDescription = document.getElementById("formDescription");
+    const inputCode = document.getElementById("formCode");
+    const inputPrice = document.getElementById("formPrice");
+    const inputStatus = document.getElementById("formtatus");
+    const inputStock = document.getElementById("formStock");
+    const inputCategory = document.getElementById("formCategory");
+    const inputImage = document.getElementById("formImage");
 
     productSocketForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        const title = title.value;
-        const description = description.value;
-        const code = code.value;
-        const price = price.value;
-        const status = status.checked;
-        const stock = stock.value;
-        const category = category.value;
-        const image = image.value;
+        const newTitle = inputTitle.value;
+        const newDescription = inputDescription.value;
+        const newCode = inputCode.value;
+        const newPrice = inputPrice.value;
+        const newStatus = inputStatus.checked;
+        const newStock = inputStock.value;
+        const newCategory = inputCategory.value;
+        const newImage = inputImage.value;
 
-        title.value = "";
-        description.value = "";
-        code.value = "";
-        price.value = "";
-        status.value = false;
-        stock.value = "";
-        category.value = "";
-        image.value = "";
+        inputTitle.value = "";
+        inputDescription.value = "";
+        inputCode.value = "";
+        inputPrice.value = "";
+        inputStatus.value = false;
+        inputStock.value = "";
+        inputCategory.value = "";
+        inputImage.value = "";
 
         socket.emit("new product", {title, description, code, price, status, stock, category, image})
     });
