@@ -51,11 +51,12 @@ const products =[];
 io.on("connection",(socket)=>{
     socket.emit("products list", products);
 
-    socket.on("new product",(productData)=>{
+    socket.on("new product",({newTitle, newDescription, newCode, newPrice, newStatus, newStock, newCategory, newImage})=>{
+        const newProduct = {title: newTitle, description: newDescription, code: newCode, price: newPrice, status: newStatus, stock: newStock, category: newCategory, image: newImage}
         //Pusheamos los mensajes que se van enviando a un array de mensajes
-        products.push(productData);
+        products.push(newProduct);
 
-        io.emit("broadcast new product", productData);
+        io.emit("broadcast new product", newProduct);
     })
 
 })
