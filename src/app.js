@@ -9,6 +9,10 @@ import websocketRouter from "./routes/websocketProds.js";
 import path from 'path';
 import __dirname from "./utils/dirname.js";
 import Handlebars from "handlebars";
+import dotenv from "dotenv";
+
+//Initialize environment variables
+dotenv.config();
 
 
 const app = express();
