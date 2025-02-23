@@ -9,6 +9,6 @@ const storage = multer.diskStorage({
     filename:(req, prodImg, callback) =>{callback(null, `${Date.now()}-${prodImg.originalname}`)}
 })
 
-const uploader = multer({storage});
+const uploader = multer({storage : storage});
 
 export default uploader

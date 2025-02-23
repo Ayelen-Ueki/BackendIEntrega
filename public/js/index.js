@@ -32,7 +32,7 @@ const main = () =>{
     const inputCategory = document.getElementById("formCategory");
     const inputImage = document.getElementById("formImage");
 
-    productSocketForm.addEventListener("submit", (event) => {
+    productSocketForm.addEventListener("submit", async(event) => {
         event.preventDefault();
         const newTitle = inputTitle.value;
         const newDescription = inputDescription.value;
@@ -41,24 +41,42 @@ const main = () =>{
         const newStatus = inputStatus.checked ? 'true' : 'false';
         const newStock = inputStock.value;
         const newCategory = inputCategory.value;
-        const newImage = inputImage.value;
-
         const file = inputImage.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-        const newImage = reader.result; // Base64 encoded image
-        inputTitle.value = "";
-        inputDescription.value = "";
-        inputCode.value = "";
-        inputPrice.value = "";
-        inputStatus.value = false;
-        inputStock.value = "";
-        inputCategory.value = "";
-        inputImage.value = "";
 
-        socket.emit("new product", {newTitle, newDescription, newCode, newPrice, newStatus, newStock, newCategory, newImage})
-        };
-        reader.readAsDataURL(file);
+        // Create a FormData object to send the image
+        const formData = new FormData();
+        formData.append('prodImg', file);
+
+        // Upload the image to the server
+        const response = await fetch('/realtimeproducts/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+            // Inspect the raw response text
+        const responseText = await response.text();
+        console.log(responseText); // Log the raw response text
+
+        try {
+            const fileData = JSON.parse(responseText); // Parse the response text as JSON
+            const newImage = fileData.path; // Get the image path
+    
+            // Reset form fields
+            inputTitle.value = "";
+            inputDescription.value = "";
+            inputCode.value = "";
+            inputPrice.value = "";
+            inputStatus.checked = false;
+            inputStock.value = "";
+            inputCategory.value = "";
+            inputImage.value = "";
+    
+            // Emit the new product details with image path
+            socket.emit("new product", { newTitle, newDescription, newCode, newPrice, newStatus, newStock, newCategory, newImage });
+        } catch (error) {
+            console.error('Failed to parse JSON response:', error);
+        }
+
     });
 
     socket.on("broadcast new product", ({title, description, code, price, status, stock, category, image})=>{

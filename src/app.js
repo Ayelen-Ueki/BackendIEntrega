@@ -10,6 +10,8 @@ import path from 'path';
 import __dirname from "./utils/dirname.js";
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
+import connectMongoDB from "./db/db.js";
+import ProductsManager from "./productsManager.js";
 
 //Initialize environment variables
 dotenv.config();
@@ -21,13 +23,15 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = 8080;
-const port = 8081;
+//const port = 8081;
 
 app.use(express.urlencoded({extended:true}));
 
 app.use(express.json());
 
 app.use(express.static("public"));
+
+connectMongoDB();
 
 //Handlebars config
 app.engine("handlebars", engine());
@@ -49,26 +53,30 @@ app.use("/api/carts", cartsRouter);
 //Websocket endpoint
 app.use("/realtimeproducts", websocketRouter);
 
-const products =[];
 
 //Websocket config
-io.on("connection",(socket)=>{
-    socket.emit("products list", products);
+io.on("connection", async(socket)=>{
+
+    await ProductsManager.initialize();
+
+    socket.emit("products list", ProductsManager.products);
 
     socket.on("new product",({newTitle, newDescription, newCode, newPrice, newStatus, newStock, newCategory, newImage})=>{
         const newProduct = {title: newTitle, description: newDescription, code: newCode, price: newPrice, status: newStatus, stock: newStock, category: newCategory, image: newImage}
+        
         //Pusheamos los mensajes que se van enviando a un array de mensajes
         products.push(newProduct);
+        ProductsManager.saveProducts(products);
 
         io.emit("broadcast new product", newProduct);
     })
 
 })
 
-app.listen(PORT, ()=>{
-    console.log("Servidor iniciado en: http://localhost:8080");
-});
+// app.listen(port, ()=>{
+//     console.log("Servidor iniciado en: http://localhost:8080");
+// });
 
-server.listen(port, ()=>{
-    console.log("Servidor iniciado en: http://localhost:8081");
+server.listen(PORT, ()=>{
+    console.log("Servidor iniciado en: http://localhost:8080");
 });
