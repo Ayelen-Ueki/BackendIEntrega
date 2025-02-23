@@ -46,7 +46,7 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 //endpoints
 app.use("/api/products", productsRouter);
 
-app.use("/products", indexRouter);
+app.use("/home", indexRouter);
 
 app.use("/api/carts", cartsRouter);
 
