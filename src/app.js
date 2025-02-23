@@ -65,8 +65,8 @@ io.on("connection", async(socket)=>{
         const newProduct = {title: newTitle, description: newDescription, code: newCode, price: newPrice, status: newStatus, stock: newStock, category: newCategory, image: newImage}
         
         //Pusheamos los mensajes que se van enviando a un array de mensajes
-        products.push(newProduct);
-        ProductsManager.saveProducts(products);
+        ProductsManager.products.push(newProduct);
+        ProductsManager.saveProducts(ProductsManager.products);
 
         io.emit("broadcast new product", newProduct);
     })
