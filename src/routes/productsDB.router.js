@@ -20,8 +20,31 @@ productsDBRouter.post("/", async(req, res)=>{
         const response = await Product.insertOne({title, description, code, price, status, stock, category, image});
         res.status(201).send({status: "success", payload:response });
     } catch (error) {
-        res.status(500).send({status: "error", message: "Error adding new product"});
+        res.status(500).send({status: "error", message: "Error adding new product."});
     }
 })
 
+productsDBRouter.put("/:pid", async(req,res)=>{
+    try {
+        const { pid } = req.params;
+        const productUpdates = req.body;
+
+        const response = await Product.updateOne({_id: pid}, productUpdates);
+        res.status(200).send({status: "success", payload: response});
+    } catch (error) {
+        res.status(500).send({status: "error", message: "Error updating the product."})
+    }
+})
+
+productsDBRouter.delete("/:pid", async(req,res)=>{
+    try {
+        const { pid } = req.params;
+
+        const response = await Product.deleteOne({_id: pid});
+
+        res.status(200).send({status:"success", payload: response})
+    } catch (error) {
+        res.status(500).send({status:"error", message: "Error deleting the product."})
+    }
+})
 export default productsDBRouter;
