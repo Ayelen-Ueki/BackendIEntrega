@@ -6,6 +6,7 @@ import cartsRouter from "./routes/carts.router.js";
 import productsRouter from "./routes/products.router.js";
 import indexRouter from "./routes/index.router.js";
 import websocketRouter from "./routes/websocketProds.js";
+import productsDBRouter from "./routes/productsDB.router.js"
 import path from 'path';
 import __dirname from "./utils/dirname.js";
 import Handlebars from "handlebars";
@@ -52,6 +53,9 @@ app.use("/api/carts", cartsRouter);
 
 //Websocket endpoint
 app.use("/realtimeproducts", websocketRouter);
+
+//MongoDB
+app.use("/products", productsDBRouter);
 
 
 //Websocket config

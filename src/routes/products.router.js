@@ -3,7 +3,6 @@ import uploader from "../utils/uploader.js";
 import crypto from "crypto";
 import ProductsManager from "../productsManager.js";
 
-
 const productsRouter = express.Router();
 
 //Show products
