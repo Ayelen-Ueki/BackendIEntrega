@@ -4,7 +4,8 @@ import {Server} from "socket.io";
 import { engine } from "express-handlebars";
 import cartsRouter from "./routes/carts.router.js";
 import productsRouter from "./routes/products.router.js";
-import indexRouter from "./routes/index.router.js";
+import viewsRouter from "./routes/views.router.js";
+//import indexRouter from "./routes/index.router.js";
 import websocketRouter from "./routes/websocketProds.js";
 import productsDBRouter from "./routes/productsDB.router.js"
 import path from 'path';
@@ -13,6 +14,7 @@ import Handlebars from "handlebars";
 import dotenv from "dotenv";
 import connectMongoDB from "./db/db.js";
 import ProductsManager from "./productsManager.js";
+
 
 //Initialize environment variables
 dotenv.config();
@@ -45,9 +47,10 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 });
 
 //endpoints
+
 app.use("/api/products", productsRouter);
 
-app.use("/home", indexRouter);
+app.use("/home", viewsRouter);
 
 app.use("/api/carts", cartsRouter);
 
@@ -56,6 +59,8 @@ app.use("/realtimeproducts", websocketRouter);
 
 //MongoDB
 app.use("/products", productsDBRouter);
+
+
 
 
 //Websocket config

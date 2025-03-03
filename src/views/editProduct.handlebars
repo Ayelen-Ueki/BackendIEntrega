@@ -1,4 +1,4 @@
-<script>
+{{!-- <script>
     async function updateProduct(productId) {
         const formData = new FormData(document.getElementById(`editForm-${productId}`));
         
@@ -20,7 +20,7 @@
             alert('Error updating product');
         }
     }
-</script>
+</script> --}}
 
 <form id="editForm-{{product.id}}" action="http://localhost:8080/api/products/{{product.id}}" method="POST" enctype="multipart/form-data">
     <p>Product: </p> 

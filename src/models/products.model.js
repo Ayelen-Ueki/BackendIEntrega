@@ -5,11 +5,13 @@ const productSchema = new mongoose.Schema({
     title: {
         type: String,
         unique: true,
-        required: true
+        required: true, 
+        //index: true
     },
     description: {
         type: String, 
         maxlength:250, 
+        index: "text",
         default: "No description available"
     },
     code: {
@@ -29,6 +31,8 @@ const productSchema = new mongoose.Schema({
         default: "/Users/mariaueki/Documents/Backend/BackendIEntrega/public/img/1740336410407-Test.jpg"
     }
 })
+
+productSchema.index({title: 1, code: 1});
 
 const Product = mongoose.model("Product", productSchema);
 
