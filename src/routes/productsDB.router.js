@@ -7,7 +7,7 @@ const productsDBRouter = express.Router();
 productsDBRouter.get("/", async (req, res)=>{
     try {
         const products = await Product.find().lean();
-        res.status(200).render("product", {products: products, title: "Product"});
+        res.status(200).render("product", {products: products, title: "Products"});
     } catch (error) {
         res.status(500).send({status: "error", message: "Error retrieving product data."})
     }
