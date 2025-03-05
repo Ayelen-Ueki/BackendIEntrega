@@ -26,6 +26,17 @@ cartsDBRouter.post("/", async(req, res)=>{
     }
 });
 
+//Get cart products by cart id
+cartsDBRouter.get("/cid",async(req,res)=>{
+    const cid = req.params.cid;
+    try {
+        const response = Cart.findById(cid);
+        res.status(200).render("cart", {carts: response, title: "Cart"});
+    } catch (error) {
+        res.status(500).send({status: "error", message: "Error retriving cart."});
+    }
+})
+
 //To add products to a cart
 cartsDBRouter.post("/:cid/products/:pid",async (req,res)=>{
     const {cid, pid} = req.params;
@@ -35,6 +46,7 @@ cartsDBRouter.post("/:cid/products/:pid",async (req,res)=>{
             {$push: {products: {product: pid}}},
             {new: true}    
         )
+        const cartProduct = await Cart.find();
     } catch (error) {
         res.status(500).send({status: "error", message: "Error adding new products to the cart."});
     }
