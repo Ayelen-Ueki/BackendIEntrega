@@ -1,8 +1,7 @@
 import express from "express";
-import Cart from "../models/carts.model";
-import productsRouter from "./products.router";
+import Cart from "../models/carts.model.js";
 
-const cartsDBRouter = express.Router;
+const cartsDBRouter = express.Router();
 
 cartsDBRouter.get("/", async (req, res)=>{
     try {
@@ -52,4 +51,6 @@ cartsDBRouter.post("/:cid/products/:pid",async (req,res)=>{
     }
 
 })
+
+export default cartsDBRouter;
 

@@ -13,7 +13,7 @@ const cartSchema = new mongoose.Schema({
 
 //middleware.pre()
 
-productSchema.pre("find", function(next){
+cartSchema.pre("find", function(next){
     this.populate("products.product");
     next();
 })

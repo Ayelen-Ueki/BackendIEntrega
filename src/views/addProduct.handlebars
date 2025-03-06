@@ -1,4 +1,4 @@
-<form id="productForm" action="http://localhost:8080/api/products/" method="POST" enctype="multipart/form-data">    
+<form id="productForm" action="http://localhost:8080/products/" method="POST" enctype="multipart/form-data">    
     <p>Product: </p>    
     <input type="text" name="title" placeholder="Product name" required>
     <p>What is it? </p>
@@ -26,15 +26,17 @@
     <button type="submit">Save</button>
 </form>
 {{!-- To handle status check --}}
-    <script>
-        document.getElementById('productForm').addEventListener('submit', function(event) {
-            // Get the checkbox element
-            const statusCheckbox = document.getElementById('status');
-            
-            // If the checkbox is checked, set the status field value to true, otherwise false
-            if (!statusCheckbox.checked) {
-                statusCheckbox.value = 'false';
-                statusCheckbox.checked = true; // Ensure the checkbox is always checked before submitting
-            }
-        });
-    </script>
+<script>
+   document.getElementById('productForm').addEventListener('submit', function(event) {
+    const statusCheckbox = document.getElementById('status');
+    // If the stock is 0, set status to "false"
+    const stockField = document.querySelector('input[name="stock"]');
+    if (stockField.value == 0) {
+        statusCheckbox.checked = false;
+        statusCheckbox.value = 'false';
+    } else {
+        statusCheckbox.checked = true;
+        statusCheckbox.value = 'true';
+    }
+});
+</script>

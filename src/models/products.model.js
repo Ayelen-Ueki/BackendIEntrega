@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema({
     stock: Number,
     category: String,
     image: {
-        type:String,
+        type: Buffer,
         default: "/Users/mariaueki/Documents/Backend/BackendIEntrega/public/img/1740336410407-Test.jpg"
     }
 })

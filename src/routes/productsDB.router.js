@@ -1,29 +1,64 @@
 import express from "express";
+import multer from "multer";
 import Product from "../models/products.model.js";
 
 const productsDBRouter = express.Router();
 
-//using MongoDB
+//MongoDB
 productsDBRouter.get("/", async (req, res)=>{
     try {
         const products = await Product.find().lean();
-        res.status(200).render("product", {products: products, title: "Products"});
+        products.forEach(product=>{
+            if(product.image){
+                const base64Image = product.image.toString('base64');
+                product.image = `data:image/jpeg;base64,${base64Image}`;
+            };
+        })
+        res.status(200).render("products", {products: products, title: "Products"});
     } catch (error) {
-        res.status(500).send({status: "error", message: "Error retrieving product data."})
+        res.status(500).send({status: "error", message: "Error retrieving product data."});
     }
 });
 
-productsDBRouter.post("/", async(req, res)=>{
+//Add new product
+productsDBRouter.get("/AddProduct", (req, res)=>{
+    res.status(200).render("addProduct",{ title: "Add Product"});
+})
+
+const upload = multer();
+productsDBRouter.post("/AddProduct",upload.single("prodImg"), async(req, res)=>{
     try {
-        const { title, description, code, price, status, stock, category, image} = req.body;
+        const { title, description, code, price, status, stock, category} = req.body;
         if(!title || !code || !price) return res.status(400).send({status: "error", message: "Please, complete all the required fields."})
-        const response = await Product.insertOne({title, description, code, price, status, stock, category, image});
+        
+        const prodImg = req.file?req.file.buffer:null;
+
+        const response = await Product.insertOne({title, description, code, price, status, stock, category, image:prodImg});
         res.status(201).render("product", {product: response, title: "Product"});
     } catch (error) {
         res.status(500).send({status: "error", message: "Error adding new product."});
     }
 });
 
+//Show product by Id
+productsDBRouter.get("/:pid", async(req, res)=>{
+    const pid = req.params.pid;
+    try {
+        const product = await Product.findbyId(pid);
+        if(product.image){
+             const base64Image = product.image.toString('base64');
+            product.image = `data:image/jpeg;base64,${base64Image}`
+        }
+        if(!product){
+            return res.status(404).send({error: "Product not found"});
+        }
+        res.status(200).render("product", {product: product, title: "Product"}); 
+    } catch (error) {
+        res.status(500).send({status:"error", message:"Error retrieving product"});
+    }
+})
+
+//To edit product by Id
 productsDBRouter.put("/:pid", async(req,res)=>{
     try {
         const { pid } = req.params;
@@ -36,6 +71,7 @@ productsDBRouter.put("/:pid", async(req,res)=>{
     }
 });
 
+//To delete product by Id
 productsDBRouter.delete("/:pid", async(req,res)=>{
     try {
         const { pid } = req.params;
