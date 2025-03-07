@@ -2,10 +2,21 @@
     <form action="http://localhost:8080/products/AddProduct" method="GET">
         <button type="submit">Add product</button>
     </form>
+    <div class="dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Categories
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">Cakes</a>
+            <a class="dropdown-item" href="#">Cookies</a>
+            <a class="dropdown-item" href="#">Others</a>
+        </div>
+    </div>
     <ul style="list-style-type: none">
         {{#each products}}
         <li>
-            <form action="http://localhost:8080/products/{{this.id}}" method="GET">
+            <form action="http://localhost:8080/products/{{this._id}}" method="GET">
                 <button type="submit">{{this.title}}</button>
             </form>
         </li>
@@ -18,14 +29,6 @@
         <li>
             <img src="{{this.image}}" alt="{{this.title}}" width="100" height="100">
         </li>
-
-        <br><br>
-
-        <form action="http://localhost:8080/products/{{product.id}}" method="GET">
-            <button type="submit">Edit</button>
-        </form>
-
-        <button onclick="deleteProduct('{{product.id}}')">Delete</button>
         {{/each}}
     </ul>
 </div>

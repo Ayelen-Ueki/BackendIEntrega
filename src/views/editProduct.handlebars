@@ -1,28 +1,4 @@
-{{!-- <script>
-    async function updateProduct(productId) {
-        const formData = new FormData(document.getElementById(`editForm-${productId}`));
-        
-        try {
-            const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
-                method: 'POST',
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                window.location.href = "http://localhost:8080/api/products"; // Redirect after successful update
-            } else {
-                alert('Error updating product');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error updating product');
-        }
-    }
-</script> --}}
-
-<form id="editForm-{{product.id}}" action="http://localhost:8080/api/products/{{product.id}}" method="POST" enctype="multipart/form-data">
+<form id="editForm-{{product._id}}" action="http://localhost:8080/products/{{product._id}}" method="POST" enctype="multipart/form-data">
     <p>Product: </p> 
     <input type="text" name="title" value="{{product.title}}" required>
     <p>What is it? </p>
@@ -31,26 +7,24 @@
     <input type="code" name="code" value="{{product.code}}" required>
     <p>Price: </p>
     <input type="number" name="price" value="{{product.price}}" required>
-    {{!-- Podria hacer que el status sea un checkbox? --}}
-    {{!-- Should I use JS in order to make the value of the checkbox always false  if the stock number is 0 (or true if there is stock) --}}
     <p>Status: </p>
-    <input type="hidden" name="status" value="false">
-    <input type="checkbox" name="status" value="true" {{#if product.status}}checked{{/if}}>
+    <input id="hiddenStatus" type="hidden" name="status" value="false">
+    <input id="statusCheckbox" type="checkbox" name="status" value="true" {{#if product.status}}checked{{/if}}>
+
     <p>Available stock: </p>
     <input type="number" name="stock" value="{{product.stock}}" required>
-    {{!-- Podria hacer que la categoria sea una lista desplegable con las diferentes opciones? --}}
     <p>Category: </p>
     <select name="category">
-        <option value="A" {{#if product.category}} {{#ifEquals product.category "A"}}selected{{/ifEquals}} {{/if}}>A</option>
-        <option value="B" {{#if product.category}} {{#ifEquals product.category "B"}}selected{{/ifEquals}} {{/if}}>B</option>
-        <option value="C" {{#if product.category}} {{#ifEquals product.category "C"}}selected{{/ifEquals}} {{/if}}>C</option>
+        <option value="cake" {{#if product.category}} {{#ifEquals product.category "cake"}}selected{{/ifEquals}} {{/if}}>A</option>
+        <option value="cookie" {{#if product.category}} {{#ifEquals product.category "cookie"}}selected{{/ifEquals}} {{/if}}>B</option>
+        <option value="other" {{#if product.category}} {{#ifEquals product.category "other"}}selected{{/ifEquals}} {{/if}}>C</option>
     </select>
     <br><br>
-    <input type="file" name="prodImg">
+    <input type="file" name="image">
     <br><br>
-    <img src="{{product.thumbnail.imgPath}}" alt="{{product.title}}" width="100" height="100">
+    <img src="{{product.image}}" alt="{{product.title}}" width="100" height="100">
     <br><br>
-    <button type="submit">Save</button>
+    <button onclick="submitEdit(`{{product._id}}`)" type="button">Save</button>
 </form>
 
 <script>
@@ -67,7 +41,6 @@
                 }
             });
 
-            // Set initial status based on stock value
             if (parseInt(stockInput.value) === 0) {
                 statusCheckbox.checked = false;
             } else {
@@ -78,15 +51,38 @@
 </script>
 
 {{!-- To handle status check --}}
-    <script>
-        document.getElementById('editForm-{{product.id}}').addEventListener('submit', function(event) {
-            // Get the checkbox element
-            const statusCheckbox = document.getElementById('status');
-            
-            // If the checkbox is checked, set the status field value to true, otherwise false
-            if (!statusCheckbox.checked) {
-                statusCheckbox.value = 'false';
-                statusCheckbox.checked = true; // Ensure the checkbox is always checked before submitting
+<script>
+    document.getElementById('editForm-{{product._id}}').addEventListener('submit', function(event) {
+        const statusCheckbox = document.getElementById('statusCheckbox'); 
+
+        if (!statusCheckbox.checked) {
+            document.getElementById('hiddenStatus').value = 'false';
+        }
+    });
+</script>
+
+{{!-- To update MongoDB with the edits --}}
+<script>
+    async function submitEdit(productId) {
+        const form = document.getElementById(`editForm-${productId}`);
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(`/products/${productId}`, {
+                method: "PUT",
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert("Product updated successfully!");
+                window.location.href = `/products/${productId}`;
+            } else {
+                const error = await response.json();
+                alert(`Failed to update product: ${error.message}`);
             }
-        });
-    </script>
+        } catch (error) {
+            console.error("Error updating product:", error);
+            alert("An error occurred while updating the product. Please try again.");
+        }
+    }
+</script>

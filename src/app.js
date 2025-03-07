@@ -10,8 +10,6 @@ import Handlebars from "handlebars";
 import dotenv from "dotenv";
 import connectMongoDB from "./db/db.js";
 
-
-
 //Initialize environment variables
 dotenv.config();
 
