@@ -1,29 +1,29 @@
 <div>
     <ul style="list-style-type: none">
-        <li>{{product.title}}</li>
-        <li>{{product.description}}</li>
-        <li>{{product.code}}</li>
-        <li>{{product.price}}</li>
-        <li>{{product.status}}</li>
-        <li>{{product.stock}}</li>
-        <li>{{product.category}}</li>
+        <li>{{cartProd.title}}</li>
+        <li>{{cartProd.description}}</li>
+        <li>{{cartProd.code}}</li>
+        <li>{{cartProd.price}}</li>
+        <li>{{cartProd.status}}</li>
+        <li>{{cartProd.stock}}</li>
+        <li>{{cartProd.category}}</li>
         <li>
-            <img src="{{product.image}}" alt="{{product.title}}" width="100" height="100">
+            <img src="{{cartProd.image}}" alt="{{cartProd.title}}" width="100" height="100">
         </li>
         <br><br>
 
         <!-- Direct Link Approach -->
-        <a href="/api/products/edit/{{product._id}}" class="btn btn-secondary">Edit</a>
+        <a href="api/carts/edit/{{cartProd._id}}" class="btn btn-secondary">Edit</a>
 
-        <button onclick="deleteProduct('{{product._id}}')">Delete</button>
+        <button onclick="deleteProduct('{{cartProd._id}}')">Delete</button>
 </div>
 
 {{!-- To call delete function --}}
 <script>
-    async function deleteProduct(productId) {
+    async function deleteProduct(cartId, cartProdId) {
         try {
             // Send DELETE request to the server
-            const response = await fetch(`/api/products/${productId}`, {
+            const response = await fetch(`/api/carts/${cartId}/products/${cartProdId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

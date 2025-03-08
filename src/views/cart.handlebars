@@ -2,11 +2,11 @@
     <form action="http://localhost:8080/api/carts/" method="POST">
         <button type="submit">Create new Cart</button>
     </form>
-    <ul>
+    <ul style="list-style-type: none">
         {{#each carts}}
         <li>
-            <form action="http://localhost:8080/api/carts/{{this.id}}" method="GET">
-                <button type="submit">{{this.id}}</button>
+            <form action="http://localhost:8080/api/carts/{{this._id}}" method="GET">
+                <button type="submit">{{this._id}}</button>
             </form>
         </li>
         <br>

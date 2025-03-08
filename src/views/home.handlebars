@@ -1,6 +1,11 @@
-<div>
+<div class="text-center">
     <h1>Welcome to my page!</h1>
-    <form action="http://localhost:8080/products/" method="GET">
-        <button type="submit">Products</button>
-    </form>
+    <div class="d-flex justify-content-center mt-3">
+        <form action="http://localhost:8080/api/products/" method="GET" style="margin-right: 10px;">
+            <button type="submit" class="btn btn-primary">Products</button>
+        </form>
+        <form action="http://localhost:8080/api/carts/" method="GET" style="margin-left: 10px;">
+            <button type="submit" class="btn btn-primary">Carts</button>
+        </form>
+    </div>
 </div>

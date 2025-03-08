@@ -1,9 +1,16 @@
 <div>
-    <h1>Cart: {{cart.cid}}</h1>
-    <ul>
-        {{#each cart}}
-        <li>{{this.products}}</li>
-        <br>
+    <h1>Cart: {{cart._id}}</h1>
+    <a href="api/carts/{{cartProd._id}}/products" class="btn btn-secondary">Add product to cart</a>
+    <button onclick="deleteProduct('{{cartProd._id}}')" class="btn btn-secondary">Clear cart</button>
+    <ul style="list-style-type: none">
+        {{#each cart.products}}
+            <li>
+                <form action="http://localhost:8080/api/carts/{{this._id}}" method="GET">
+                    <button type="submit">{{this.title}}</button>
+                </form>
+            </li>
+            <br>
         {{/each}}
     </ul>
 </div>
+

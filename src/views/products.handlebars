@@ -1,5 +1,5 @@
 <div>
-    <form action="http://localhost:8080/products/AddProduct" method="GET">
+    <form action="http://localhost:8080/api/products/AddProduct" method="GET">
         <button type="submit">Add product</button>
     </form>
     <div class="dropdown show">
@@ -16,7 +16,7 @@
     <ul style="list-style-type: none">
         {{#each products}}
         <li>
-            <form action="http://localhost:8080/products/{{this._id}}" method="GET">
+            <form action="http://localhost:8080/api/products/{{this._id}}" method="GET">
                 <button type="submit">{{this.title}}</button>
             </form>
         </li>

@@ -1,10 +1,10 @@
-<form id="editForm-{{product._id}}" action="http://localhost:8080/products/{{product._id}}" method="POST" enctype="multipart/form-data">
+<form id="editForm-{{product._id}}" action="http://localhost:8080/products/{{product._id}}" enctype="multipart/form-data">
     <p>Product: </p> 
     <input type="text" name="title" value="{{product.title}}" required>
     <p>What is it? </p>
     <input type="text" name="description" value="{{product.description}}">
     <p>Code: </p>
-    <input type="code" name="code" value="{{product.code}}" required>
+    <input type="text" name="code" value="{{product.code}}" required>
     <p>Price: </p>
     <input type="number" name="price" value="{{product.price}}" required>
     <p>Status: </p>
@@ -15,9 +15,9 @@
     <input type="number" name="stock" value="{{product.stock}}" required>
     <p>Category: </p>
     <select name="category">
-        <option value="cake" {{#if product.category}} {{#ifEquals product.category "cake"}}selected{{/ifEquals}} {{/if}}>A</option>
-        <option value="cookie" {{#if product.category}} {{#ifEquals product.category "cookie"}}selected{{/ifEquals}} {{/if}}>B</option>
-        <option value="other" {{#if product.category}} {{#ifEquals product.category "other"}}selected{{/ifEquals}} {{/if}}>C</option>
+        <option value="cake" {{#if product.category}} {{#ifEquals product.category "cake"}}selected{{/ifEquals}} {{/if}}>Cake</option>
+        <option value="cookie" {{#if product.category}} {{#ifEquals product.category "cookie"}}selected{{/ifEquals}} {{/if}}>Cookie</option>
+        <option value="other" {{#if product.category}} {{#ifEquals product.category "other"}}selected{{/ifEquals}} {{/if}}>Other</option>
     </select>
     <br><br>
     <input type="file" name="image">
@@ -52,13 +52,20 @@
 
 {{!-- To handle status check --}}
 <script>
-    document.getElementById('editForm-{{product._id}}').addEventListener('submit', function(event) {
-        const statusCheckbox = document.getElementById('statusCheckbox'); 
+document.getElementById('editForm-{{product._id}}').addEventListener('submit', function(event) {
+    const statusCheckbox = document.getElementById('statusCheckbox');
+    const hiddenStatus = document.getElementById('hiddenStatus');
+    const originalStatus = hiddenStatus.value; 
 
-        if (!statusCheckbox.checked) {
-            document.getElementById('hiddenStatus').value = 'false';
-        }
-    });
+    const newStatus = statusCheckbox.checked ? 'true' : 'false';
+    if (originalStatus === newStatus) {
+        event.preventDefault(); 
+        return;
+    }
+
+    hiddenStatus.value = newStatus;
+});
+
 </script>
 
 {{!-- To update MongoDB with the edits --}}
@@ -68,7 +75,7 @@
         const formData = new FormData(form);
 
         try {
-            const response = await fetch(`/products/${productId}`, {
+            const response = await fetch(`/products/edit/${productId}`, {
                 method: "PUT",
                 body: formData,
             });

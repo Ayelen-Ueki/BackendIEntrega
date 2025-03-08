@@ -79,7 +79,7 @@ productsDBRouter.get("/edit/:pid", async (req, res)=>{
 });
 
 
-productsDBRouter.put("/:pid", async(req,res)=>{
+productsDBRouter.put("/:pid", upload.single("image"), async(req,res)=>{
     try {
         const { pid } = req.params;
         const productUpdates = req.body;
@@ -87,7 +87,7 @@ productsDBRouter.put("/:pid", async(req,res)=>{
         if (req.file) {
             productUpdates.image = req.file.buffer;
         }
-        console.log("Product updates:", productUpdates);
+
         const response = await Product.findByIdAndUpdate(pid, productUpdates,{ new: true, runValidators: true });
         if (!response) {
             return res.status(400).send({ status: "error", message: "Product not found."});

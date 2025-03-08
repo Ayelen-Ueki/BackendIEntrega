@@ -39,11 +39,11 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 
 //endpoints
 
-app.use("/home", viewsRouter);
+app.use("/", viewsRouter);
 
 //MongoDB
-app.use("/products", productsDBRouter);
-app.use("/carts", cartsDBRouter);
+app.use("/api/products", productsDBRouter);
+app.use("/api/carts", cartsDBRouter);
 
 
 app.listen(PORT, ()=>{
