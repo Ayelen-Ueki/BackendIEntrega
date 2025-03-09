@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
 
 const productSchema = new mongoose.Schema({
     //Schema config object
@@ -32,7 +34,7 @@ const productSchema = new mongoose.Schema({
     }
 })
 
-productSchema.index({title: 1, code: 1});
+productSchema.plugin(paginate);
 
 const Product = mongoose.model("Product", productSchema);
 

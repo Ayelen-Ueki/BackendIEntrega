@@ -7,14 +7,19 @@ const productsDBRouter = express.Router();
 //MongoDB
 productsDBRouter.get("/", async (req, res)=>{
     try {
-        const products = await Product.find().lean();
+        //Pagination
+        const page = parseInt(req.query.page) || 1;
+        const limit = 20;
+        const products = await Product.paginate({},{page, limit, lean: true});
+
         products.forEach(product=>{
             if(product.image){
                 const base64Image = product.image.toString('base64');
                 product.image = `data:image/jpeg;base64,${base64Image}`;
             };
         })
-        res.status(200).render("products", {products: products, title: "Products"});
+        
+        res.status(200).render("products", { products, title:"Products"});
     } catch (error) {
         res.status(500).send({status: "error", message: "Error retrieving product data."});
     }
@@ -111,4 +116,5 @@ productsDBRouter.delete("/:pid", async(req,res)=>{
         res.status(500).send({status:"error", message: "Error deleting the product."})
     }
 });
+
 export default productsDBRouter;
