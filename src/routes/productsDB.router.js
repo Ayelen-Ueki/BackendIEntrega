@@ -9,7 +9,7 @@ productsDBRouter.get("/", async (req, res)=>{
     try {
         //Pagination
         const page = parseInt(req.query.page) || 1;
-        const limit = 20;
+        const limit = 2;
         const products = await Product.paginate({},{page, limit, lean: true});
 
         products.docs.forEach(product=>{
@@ -41,7 +41,7 @@ productsDBRouter.get("/AddProduct", (req, res)=>{
 
 const upload = multer();
 
-productsDBRouter.post("/",upload.single("prodImg"), async(req, res)=>{
+productsDBRouter.post("/", upload.single("prodImg"), async(req, res)=>{
     try {
         const { title, description, code, price, status, stock, category} = req.body;
         if(!title || !code || !price) return res.status(400).send({status: "error", message: "Please, complete all the required fields."})
@@ -49,7 +49,7 @@ productsDBRouter.post("/",upload.single("prodImg"), async(req, res)=>{
         const prodImg = req.file?req.file.buffer:null;
 
         const response = await Product.insertOne({title, description, code, price, status, stock, category, image:prodImg});
-        res.status(201).render("product", {product: response, title: "Product"});
+        res.status(201).render("products", {products: response, title: "Products"});
     } catch (error) {
         res.status(500).send({status: "error", message: "Error adding new product."});
     }
@@ -94,7 +94,7 @@ productsDBRouter.get("/edit/:pid", async (req, res)=>{
 
 
 
-productsDBRouter.put("/:pid", async(req,res)=>{
+productsDBRouter.put("/:pid", upload.single("prodImg"), async(req,res)=>{
     try {
         const { pid } = req.params;
         const productUpdates = req.body;

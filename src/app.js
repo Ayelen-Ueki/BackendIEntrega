@@ -9,6 +9,9 @@ import __dirname from "./utils/dirname.js";
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
 import connectMongoDB from "./db/db.js";
+import methodOverride from "method-override";
+
+
 
 //Initialize environment variables
 dotenv.config();
@@ -25,6 +28,7 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
+app.use(methodOverride('_method'));
 
 connectMongoDB();
 

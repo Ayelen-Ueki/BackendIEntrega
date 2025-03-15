@@ -32,11 +32,11 @@
         {{/each}}
     </ul>
 </div>
-<p>Page {{products.page}} of {{products.totalPages}}</p>
-{{#if products.hasPrevPage}}
-<a href="/?page={{products.prevPage}}">Previous</a>
+<p>Page {{page}} of {{totalPages}}</p>
+{{#if hasPrevPage}}
+<a href="http://localhost:8080/api/products//?page={{prevPage}}">Previous</a>
 {{/if}}
 
-{{#if products.hasNextPage}}
-<a href="/?page={{products.nextPage}}">Next</a>
+{{#if hasNextPage}}
+<a href="http://localhost:8080/api/products//?page={{nextPage}}">Next</a>
 {{/if}}

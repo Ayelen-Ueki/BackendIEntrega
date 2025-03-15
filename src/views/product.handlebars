@@ -23,7 +23,7 @@
     async function deleteProduct(productId) {
         try {
             // Send DELETE request to the server
-            const response = await fetch(`/api/products/${productId}`, {
+            const response = await fetch(`/api/products/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
