@@ -1,4 +1,4 @@
-<form id="editForm-{{product._id}}" action="http://localhost:8080/products/{{product._id}}" enctype="multipart/form-data">
+<form id="editForm-{{product._id}}" action="http://localhost:8080/api/products/{{product._id}}" method="PUT" enctype="multipart/form-data">
     <p>Product: </p> 
     <input type="text" name="title" value="{{product.title}}" required>
     <p>What is it? </p>
@@ -24,7 +24,7 @@
     <br><br>
     <img src="{{product.image}}" alt="{{product.title}}" width="100" height="100">
     <br><br>
-    <button onclick="submitEdit(`{{product._id}}`)" type="button">Save</button>
+    <button onclick="submitEdit(`{{product._id}}`)" type="submit">Save</button>
 </form>
 
 <script>
@@ -40,32 +40,17 @@
                     statusCheckbox.checked = true;
                 }
             });
-
-            if (parseInt(stockInput.value) === 0) {
-                statusCheckbox.checked = false;
-            } else {
-                statusCheckbox.checked = true;
-            }
         }
     });
 </script>
 
 {{!-- To handle status check --}}
 <script>
-document.getElementById('editForm-{{product._id}}').addEventListener('submit', function(event) {
+document.getElementById(`editForm-{{product._id}}`).addEventListener('submit', function () {
     const statusCheckbox = document.getElementById('statusCheckbox');
     const hiddenStatus = document.getElementById('hiddenStatus');
-    const originalStatus = hiddenStatus.value; 
-
-    const newStatus = statusCheckbox.checked ? 'true' : 'false';
-    if (originalStatus === newStatus) {
-        event.preventDefault(); 
-        return;
-    }
-
-    hiddenStatus.value = newStatus;
+    hiddenStatus.value = statusCheckbox.checked ? 'true' : 'false';
 });
-
 </script>
 
 {{!-- To update MongoDB with the edits --}}
@@ -75,14 +60,17 @@ document.getElementById('editForm-{{product._id}}').addEventListener('submit', f
         const formData = new FormData(form);
 
         try {
-            const response = await fetch(`/products/edit/${productId}`, {
+            const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
                 method: "PUT",
                 body: formData,
+                headers: {
+                'Accept': 'application/json'
+                },
             });
 
             if (response.ok) {
                 alert("Product updated successfully!");
-                window.location.href = `/products/${productId}`;
+                window.location.href = `http://localhost:8080/api/products/`;
             } else {
                 const error = await response.json();
                 alert(`Failed to update product: ${error.message}`);

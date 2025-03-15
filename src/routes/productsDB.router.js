@@ -12,14 +12,23 @@ productsDBRouter.get("/", async (req, res)=>{
         const limit = 20;
         const products = await Product.paginate({},{page, limit, lean: true});
 
-        products.forEach(product=>{
+        products.docs.forEach(product=>{
             if(product.image){
                 const base64Image = product.image.toString('base64');
                 product.image = `data:image/jpeg;base64,${base64Image}`;
             };
         })
         
-        res.status(200).render("products", { products, title:"Products"});
+        res.status(200).render("products", { 
+            products: products.docs,
+            page: products.page,
+            totalPages: products.totalPages,
+            prevPage: products.prevPage,
+            nextPage: products.nextPage,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            title:"Products",
+            categories: ["Cakes", "Cookies", "Others"],});
     } catch (error) {
         res.status(500).send({status: "error", message: "Error retrieving product data."});
     }
@@ -84,7 +93,8 @@ productsDBRouter.get("/edit/:pid", async (req, res)=>{
 });
 
 
-productsDBRouter.put("/:pid", upload.single("image"), async(req,res)=>{
+
+productsDBRouter.put("/:pid", async(req,res)=>{
     try {
         const { pid } = req.params;
         const productUpdates = req.body;
@@ -93,11 +103,13 @@ productsDBRouter.put("/:pid", upload.single("image"), async(req,res)=>{
             productUpdates.image = req.file.buffer;
         }
 
-        const response = await Product.findByIdAndUpdate(pid, productUpdates,{ new: true, runValidators: true });
+        await Product.findByIdAndUpdate(pid, productUpdates,{ new: true, runValidators: true });
+
+        const response = await Product.findById(pid).lean();
+        
         if (!response) {
             return res.status(400).send({ status: "error", message: "Product not found."});
         }
-        console.log("Updated product:", response);
         res.status(200).render("product", {product: response, title: "Product"});
     } catch (error) {
         res.status(500).send({status: "error", message: "Error updating the product."})

@@ -3,7 +3,7 @@
         <button type="submit">Add product</button>
     </form>
     <div class="dropdown show">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="btn btn-secondary dropdown-toggle" href="/?category={{this}}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Categories
         </a>
 
@@ -14,7 +14,7 @@
         </div>
     </div>
     <ul style="list-style-type: none">
-        {{#each docs}}
+        {{#each products}}
             <li>
                 <form action="http://localhost:8080/api/products/{{this._id}}" method="GET">
                     <button type="submit">{{this.title}}</button>
@@ -32,11 +32,11 @@
         {{/each}}
     </ul>
 </div>
-<p>Page {{page}} of {{totalPages}}</p>
-{{#if hasPrevPage}}
-<a href="/?page={{prevPage}}">Previous</a>
+<p>Page {{products.page}} of {{products.totalPages}}</p>
+{{#if products.hasPrevPage}}
+<a href="/?page={{products.prevPage}}">Previous</a>
 {{/if}}
 
-{{#if hasNextPage}}
-<a href="/?page={{nextPage}}">Next</a>
+{{#if products.hasNextPage}}
+<a href="/?page={{products.nextPage}}">Next</a>
 {{/if}}
