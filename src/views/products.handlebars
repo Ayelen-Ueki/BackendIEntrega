@@ -2,16 +2,24 @@
     <form action="http://localhost:8080/api/products/AddProduct" method="GET">
         <button type="submit">Add product</button>
     </form>
-    <div class="dropdown show">
-        <a class="btn btn-secondary dropdown-toggle" href="/?category={{this}}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Categories
-        </a>
 
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">Cakes</a>
-            <a class="dropdown-item" href="#">Cookies</a>
-            <a class="dropdown-item" href="#">Others</a>
-        </div>
+    <div class="dropdown" >
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+               Categories
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="http://localhost:8080/api/products/">All</a></li>
+                <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cake">Cakes</a></li>
+                <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cookie">Cookies</a></li>
+                <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cther">Others</a></li>
+            </ul>
+    </div>
+
+    <div class="sort-buttons">
+        <a href="http://localhost:8080/api/products/?sort=price_asc" class="btn">Min-Max price</a>
+        <a href="http://localhost:8080/api/products/?sort=price_desc" class="btn">Max-Min price</a>
+    </div>
+
     </div>
     <ul style="list-style-type: none">
         {{#each products}}

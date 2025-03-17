@@ -10,7 +10,12 @@ productsDBRouter.get("/", async (req, res)=>{
         //Pagination
         const page = parseInt(req.query.page) || 1;
         const limit = 2;
-        const products = await Product.paginate({},{page, limit, lean: true});
+
+        const category = req.query.category || null;
+        const query = category ? { category } : {};
+        const sort = req.query.sort === "price_asc" ? { price: 1 } : req.query.sort === "price_desc" ? { price: -1 } : {};
+
+        const products = await Product.paginate(query,{page, limit, lean: true, sort: sort});
 
         products.docs.forEach(product=>{
             if(product.image){
@@ -28,7 +33,10 @@ productsDBRouter.get("/", async (req, res)=>{
             hasPrevPage: products.hasPrevPage,
             hasNextPage: products.hasNextPage,
             title:"Products",
-            categories: ["Cakes", "Cookies", "Others"],});
+            categories: ["Cakes", "Cookies", "Others"],
+            selectedCategory: category || "All",
+            selectedSort: req.query.sort,
+        });
     } catch (error) {
         res.status(500).send({status: "error", message: "Error retrieving product data."});
     }
