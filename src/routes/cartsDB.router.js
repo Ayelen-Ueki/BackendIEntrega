@@ -44,19 +44,40 @@ cartsDBRouter.put("/:cid",async(req,res)=>{
 })
 
 //To add products to selected cart
-cartsDBRouter.post("/:cid/products/:pid",async (req,res)=>{
-    const {cid, pid} = req.params;
-    try {
-        const response = await Cart.findByIdAndUpdate(
-            cid,
-            {$push: {products: {product: pid}}},
-            {new: true}    
-        )
-        const cartProduct = await Cart.find();
-    } catch (error) {
-        res.status(500).send({status: "error", message: "Error adding new products to the cart."});
-    }
+cartsDBRouter.put("/:cid",async (req,res)=>{
+    const { cid } = req.params; 
+    const { productId } = req.body; 
 
+    console.log("Cart ID:", cid); 
+    console.log("Product ID:", productId);
+
+    try {
+   
+        const updatedCart = await Cart.findByIdAndUpdate(
+            cid,
+            { $push: { products: { product: productId } } }, 
+            { new: true } 
+        );
+
+        if (!updatedCart) {
+            return res.status(404).send({
+                status: "error",
+                message: `Cart with ID ${cid} not found.`,
+            });
+        }
+
+        res.status(200).send({
+            status: "success",
+            message: "Product added to cart successfully!",
+            cart: updatedCart,
+        });
+    } catch (error) {
+        console.error("Error adding product to cart:", error);
+        res.status(500).send({
+            status: "error",
+            message: "Error adding product to cart. Please try again.",
+        });
+    }
 })
 
 //Delete all products in selected cart

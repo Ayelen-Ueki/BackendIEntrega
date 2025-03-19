@@ -13,6 +13,7 @@
                 <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cookie">Cookies</a></li>
                 <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cther">Others</a></li>
             </ul>
+            
     </div>
 
     <div class="sort-buttons">
@@ -37,6 +38,14 @@
             <li>
                 <img src="{{this.image}}" alt="{{this.title}}" width="100" height="100">
             </li>
+            <li>
+                <form onsubmit="event.preventDefault(); addToCart('{{this._id}}')">
+                    <input id="cartId-{{this._id}}" placeholder="Insert cart Id" required>
+                    <button type="submit">Add to Cart</button>
+                </form>
+             </li>
+</form>
+
         {{/each}}
     </ul>
 </div>
@@ -48,3 +57,35 @@
 {{#if hasNextPage}}
 <a href="http://localhost:8080/api/products//?page={{nextPage}}">Next</a>
 {{/if}}
+
+<script>
+async function addToCart(productId) {
+    console.log("addToCart function called with productId:", productId);
+    const cartId = document.getElementById(`cartId-${productId}`).value;
+    console.log("Cart ID:", cartId, "Product ID:", productId);
+    if (!cartId) {
+        alert('Please provide a Cart ID');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8080/api/carts/${cartId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ productId }),
+        });
+
+        const result = await response.json();
+        console.log("Response:", result); 
+        if (response.ok) {
+            alert('Product added to cart!');
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('Error adding product to cart:', error);
+    }
+}
+</script>
