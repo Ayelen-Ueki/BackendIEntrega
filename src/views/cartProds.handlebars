@@ -10,13 +10,13 @@
                 <button onclick="deleteProductFromCart('{{../cart._id}}', '{{this.product._id}}')" class="btn btn-secondary">Delete</button>
             </li>
             <li>
-                <buttononclick="updateProductQuantity('{{../cart._id}}', '{{this.product._id}}', '+')" class="btn btn-secondary">+</button>
+                <button onclick="updateProductQuantity('{{../cart._id}}', '{{this.product._id}}', '+')" class="btn btn-secondary">+</button>
             </li>
             <li>
                 {{this.quantity}}
             </li>
             <li>
-                <buttononclick="updateProductQuantity('{{../cart._id}}', '{{this.product._id}}', '-')" class="btn btn-secondary">-</button>
+                <button onclick="updateProductQuantity('{{../cart._id}}', '{{this.product._id}}', '-')" class="btn btn-secondary">-</button>
             </li>
             <br>
         {{/each}}
