@@ -1,16 +1,91 @@
 <div>
     <h1>Cart: {{cart._id}}</h1>
-    <a href="api/carts/{{cartProd._id}}/products" class="btn btn-secondary">Add product to cart</a>
-    <button onclick="deleteProduct('{{cartProd._id}}')" class="btn btn-secondary">Clear cart</button>
+    <button onclick="clearCart('{{cart._id}}')" class="btn btn-secondary">Clear cart</button>
     <ul style="list-style-type: none">
         {{#each cart.products}}
             <li>
-                <form action="http://localhost:8080/api/carts/{{this._id}}" method="GET">
-                    <button type="submit">{{this.title}}</button>
-                </form>
+                {{this.product.title}}
+            </li>
+            <li>
+                <button onclick="deleteProductFromCart('{{../cart._id}}', '{{this.product._id}}')" class="btn btn-secondary">Delete</button>
+            </li>
+            <li>
+                <buttononclick="updateProductQuantity('{{../cart._id}}', '{{this.product._id}}', '+')" class="btn btn-secondary">+</button>
+            </li>
+            <li>
+                {{this.quantity}}
+            </li>
+            <li>
+                <buttononclick="updateProductQuantity('{{../cart._id}}', '{{this.product._id}}', '-')" class="btn btn-secondary">-</button>
             </li>
             <br>
         {{/each}}
     </ul>
 </div>
 
+
+<script>
+    async function clearCart(cartId) {
+        try {
+            const response = await fetch(`/api/carts/${cartId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert("Cart emptied successfully!");
+                location.reload(); // Reload the page to show the empty cart
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (err) {
+            console.error("Failed to clear the cart:", err);
+            alert("An error occurred while clearing the cart.");
+        }
+}
+</script>
+
+<script>
+    async function deleteProductFromCart(cartId, productId) {
+        try {
+            const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert("Product deleted successfully!");
+                location.reload();
+            } else {
+                const error = await response.json();
+                alert(`Error: ${error.message}`);
+            }
+        } catch (err) {
+            console.error("Failed to delete the product:", err);
+            alert("An error occurred while deleting the product.");
+        }
+}
+</script>
+
+<script>
+    async function updateProductQuantity(cartId, productId, action) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action })
+        });
+
+        if (response.ok) {
+            alert("Quantity updated successfully!");
+            location.reload(); 
+        } else {
+            const error = await response.json();
+            alert(`Error: ${error.message}`);
+        }
+    } catch (err) {
+        console.error("Failed to update product quantity:", err);
+        alert("An error occurred while updating the quantity.");
+    }
+}
+
+</script>

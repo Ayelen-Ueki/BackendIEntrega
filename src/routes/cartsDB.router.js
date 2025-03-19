@@ -12,6 +12,7 @@ cartsDBRouter.get("/", async (req, res)=>{
     }
 });
 
+
 //To create a new empty cart
 cartsDBRouter.post("/", async(req, res)=>{
     try {
@@ -29,7 +30,7 @@ cartsDBRouter.post("/", async(req, res)=>{
 cartsDBRouter.get("/:cid",async(req,res)=>{
     const cid = req.params.cid;
     try {
-        const cart = await Cart.findById(cid).lean();
+        const cart = await Cart.findById(cid).populate("products.product").lean();
         console.log(cart);
         res.status(200).render("cartProds", {cart: cart, title: "Cart"});
     } catch (error) {
@@ -37,11 +38,6 @@ cartsDBRouter.get("/:cid",async(req,res)=>{
     }
 })
 
-//Update cart product array
-cartsDBRouter.put("/:cid",async(req,res)=>{
-    const cid = req.params.cid;
-
-})
 
 //To add products to selected cart
 cartsDBRouter.put("/:cid",async (req,res)=>{
@@ -80,6 +76,37 @@ cartsDBRouter.put("/:cid",async (req,res)=>{
     }
 })
 
+//Update product quantity in a cart
+cartsDBRouter.put("/:cid/products/:pid", async(req,res)=>{
+    try {
+        const {cid, pid} = req.params;
+
+        const {action} = req.body;
+        
+        const cart = await Cart.findById(cid);
+        if(!cart){
+            return res.status(404).send({status:"error", message:"Cart not found."});
+        }
+        const prodInCart = cart.products.find(p=>p.product.toString()===pid)
+        if(!prodInCart){
+            return res.status(404).send({status:"error", message: "Product not found"});
+        }
+
+        //Update quantity
+        if(action ==="+"){
+            prodInCart.quantity+=1;
+        }else if(action ==="-" && prodInCart.quantity>1){
+            prodInCart.quantity-=1;
+        }else if(action==="-" && prodInCart.quantity===1){
+            cart.products = cart.products.filter(p=>p.product.toString()!==pid);
+        }
+        await cart.save();
+        res.status(200).send({status:"success", payload: cart});
+    } catch (error) {
+        res.status(500).send({status:"error", message: "Error deleting the product of the selected cart.", error: error.message})
+    }
+})
+
 //Delete all products in selected cart
 cartsDBRouter.delete("/:cid",async(req,res)=>{
     const cid = req.params.cid;
@@ -105,11 +132,11 @@ cartsDBRouter.delete("/:cid/products/:pid", async(req,res)=>{
 
         const response = await Cart.findByIdAndUpdate(
             cid, 
-            {$pull:{products:{_id:pid}}},
+            {$pull: {products: {product: pid}}},
             {new:true}
         );
         if(!response){
-            return res.status(404).send({status:"error", message: `Product with id ${pid} removed from cart ${cid}.`, message:"Cart or product not found."})
+            return res.status(404).send({status:"error", message:"Cart or product not found."})
         }
         res.status(200).send({status:"success", payload: response})
     } catch (error) {
