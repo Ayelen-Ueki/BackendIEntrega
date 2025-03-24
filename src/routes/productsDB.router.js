@@ -9,7 +9,7 @@ productsDBRouter.get("/", async (req, res)=>{
     try {
         //Pagination
         const page = parseInt(req.query.page) || 1;
-        const limit = 2;
+        const limit = 4;
 
         const category = req.query.category || null;
         const query = category ? { category } : {};

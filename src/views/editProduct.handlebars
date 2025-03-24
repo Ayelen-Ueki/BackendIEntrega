@@ -1,32 +1,63 @@
-<form id="editForm-{{product._id}}" action="http://localhost:8080/api/products/{{product._id}}" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_method" value="PUT">
-    <p>Product: </p> 
-    <input type="text" name="title" value="{{product.title}}" required>
-    <p>What is it? </p>
-    <input type="text" name="description" value="{{product.description}}">
-    <p>Code: </p>
-    <input type="text" name="code" value="{{product.code}}" required>
-    <p>Price: </p>
-    <input type="number" name="price" value="{{product.price}}" required>
-    <p>Status: </p>
-    <input id="hiddenStatus" type="hidden" name="status" value="false">
-    <input id="statusCheckbox" type="checkbox" name="status" value="true" {{#if product.status}}checked{{/if}}>
+<div class="container mt-5"> 
+    <div class="card" style="width: 100%; padding: 20px;"> 
+        <div class="card-body">
+            <form id="editForm-{{product._id}}" action="http://localhost:8080/api/products/{{product._id}}"
+                method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="PUT">
+                <div class="mb-3"> 
+                    <label for="title" class="form-label">Product:</label>
+                    <input type="text" id="title" name="title" class="form-control" value="{{product.title}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">What is it?</label>
+                    <input type="text" id="description" name="description" class="form-control"
+                        value="{{product.description}}">
+                </div>
+                <div class="mb-3">
+                    <label for="code" class="form-label">Code:</label>
+                    <input type="text" id="code" name="code" class="form-control" value="{{product.code}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" id="price" name="price" class="form-control" value="{{product.price}}"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status:</label>
+                    <input id="hiddenStatus" type="hidden" name="status" value="false">
+                    <input id="statusCheckbox" type="checkbox" name="status" value="true" {{#if
+                        product.status}}checked{{/if}}>
+                </div>
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Available stock:</label>
+                    <input type="number" id="stock" name="stock" class="form-control" value="{{product.stock}}"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select id="category" name="category" class="form-select">
+                        <option value="cake" {{#if product.category}} {{#ifEquals product.category "cake"
+                            }}selected{{/ifEquals}} {{/if}}>Cake</option>
+                        <option value="cookie" {{#if product.category}} {{#ifEquals product.category "cookie"
+                            }}selected{{/ifEquals}} {{/if}}>Cookie</option>
+                        <option value="other" {{#if product.category}} {{#ifEquals product.category "other"
+                            }}selected{{/ifEquals}} {{/if}}>Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="prodImg" class="form-label">Upload image:</label>
+                    <input type="file" id="prodImg" name="prodImg" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <img src="{{product.image}}" alt="{{product.title}}" width="100" height="100">
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-    <p>Available stock: </p>
-    <input type="number" name="stock" value="{{product.stock}}" required>
-    <p>Category: </p>
-    <select name="category">
-        <option value="cake" {{#if product.category}} {{#ifEquals product.category "cake"}}selected{{/ifEquals}} {{/if}}>Cake</option>
-        <option value="cookie" {{#if product.category}} {{#ifEquals product.category "cookie"}}selected{{/ifEquals}} {{/if}}>Cookie</option>
-        <option value="other" {{#if product.category}} {{#ifEquals product.category "other"}}selected{{/ifEquals}} {{/if}}>Other</option>
-    </select>
-    <br><br>
-    <input type="file" name="prodImg">
-    <br><br>
-    <img src="{{product.image}}" alt="{{product.title}}" width="100" height="100">
-    <br><br>
-    <button type="submit">Save</button>
-</form>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {

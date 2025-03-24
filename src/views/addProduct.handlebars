@@ -1,27 +1,48 @@
-<form id="productForm" action="http://localhost:8080/api/products/" method="POST" enctype="multipart/form-data">    
-    <p>Product: </p>    
-    <input type="text" name="title" placeholder="Product name" required>
-    <p>What is it? </p>
-    <input type="text" name="description" placeholder="Description">
-    <p>Code: </p>
-    <input type="text" name="code" placeholder="Code" required>
-    <p>Price: </p>
-    <input type="number" name="price" placeholder="Price" required>
-    <p>Status: </p>
-    <input type="checkbox" id="status" name="status" value="true">
-    <p>Available stock: </p>
-    <input type="number" name="stock" placeholder="Available quantity" required>
-    <p>Category: </p>
-    <select name="category">
-        <option value="cake">Cake</option>
-        <option value="cookie">Cookie</option>
-        <option value="other">Other</option>
-    </select>
-    <br><br>
-    <input type="file" name="prodImg">
-    <br><br>
-    <button type="submit">Save</button>
-</form>
+<div class="container;">
+    <h1>Add new product</h1>
+    <div class="card" style="margin:10px; padding: 10px;">
+            <form id="productForm" action="http://localhost:8080/api/products/" method="POST" enctype="multipart/form-data">
+        <div class="mb-7">
+            <label class="form-label">Product </label>
+            <input class="form-control" type="text" name="title" placeholder="Product name" required>
+        </div>
+        <div class="mb-7">
+            <label class="form-label">What is it? </label>
+            <input class="form-control" type="text" name="description" placeholder="Description">
+        </div>
+        <div class="mb-7">
+            <label class="form-label">Code </label>
+            <input class="form-control" type="text" name="code" placeholder="Code" required>
+        </div>
+        <div class="mb-7">
+            <label class="form-label">Price </label>
+            <input class="form-control" type="number" name="price" placeholder="Price" required>
+        </div>
+        <div class="mb-7">
+            <label class="form-check-label">Status </label>
+            <input class="form-check-input" type="checkbox" id="status" name="status" value="true">
+        </div>
+        <div class="mb-7">
+            <label class="form-label">Available stock </label>
+            <input class="form-control" type="number" name="stock" placeholder="Available quantity" required>
+        </div>
+        <div class="mb-7">
+            <label class="form-label">Category </label>
+            <select class="form-select" name="category">
+                <option value="cake">Cake</option>
+                <option value="cookie">Cookie</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="mb-7">
+            <label class="form-label" for="prodImg"> Upload image</label>
+            <input class="form-control" type="file" name="prodImg" id="prodImg">
+        </div>
+        <button class="btn btn-success" style="margin-top: 5px;" type="submit">Save</button>
+    </form>
+    </div>
+</div>
+
 {{!-- To handle status check --}}
 <script>
    document.getElementById('productForm').addEventListener('submit', function(event) {

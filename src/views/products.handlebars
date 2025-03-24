@@ -1,62 +1,78 @@
 <div>
-    <form action="http://localhost:8080/api/products/AddProduct" method="GET">
-        <button type="submit">Add product</button>
-    </form>
-
-    <div class="dropdown" >
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-               Categories
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="http://localhost:8080/api/products/">All</a></li>
-                <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cake">Cakes</a></li>
-                <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cookie">Cookies</a></li>
-                <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cther">Others</a></li>
-            </ul>
+    <div class="container" style="padding:10px">
+        <div class="row">
+            <div class="col-6 text-start">
+                <form action="http://localhost:8080/api/products/AddProduct" method="GET">
+                    <button class="btn btn-primary" type="submit">Add product</button>
+                </form>
+            </div>
+            <div class="col">
+                <div class="sort-buttons">
+                    <a href="http://localhost:8080/api/products/?sort=price_asc" class="btn btn-secondary">Min-Max price</a>
+                    <a href="http://localhost:8080/api/products/?sort=price_desc" class="btn btn-secondary">Max-Min
+                        price</a>
+                </div>
+            </div>
+                <div class="col text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Categories
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="http://localhost:8080/api/products/">All</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cake">Cakes</a></li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=cookie">Cookies</a>
+                            </li>
+                            <li><a class="dropdown-item" href="http://localhost:8080/api/products/?category=other">Others</a>
+                            </li>
+                        </ul>
+                
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {{#each products}}
+            <div class="col-3 mb-4">
+                <div class="card" style="width: 100%;">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.title}}">
+                    <div class="card-body">
+                        <h2>
+                            <a style="text-decoration: none; color: brown;"
+                                href="http://localhost:8080/api/products/{{this._id}}">{{this.title}}</a>
+                        </h2>
+                        <p>{{this.description}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Price: ${{this.price}}</li>
+                        <li class="list-group-item">Available stock: {{this.stock}}</li>
+                        <li class="list-group-item">Category: {{this.category}}</li>
+                    </ul>
+                    <div class="card-body">
+                        <form onsubmit="event.preventDefault(); addToCart('{{this._id}}')">
+                            <input style="margin-bottom: 5px" id="cartId-{{this._id}}" placeholder="Insert cart Id"
+                                required>
+                            <button class="btn btn-success" type="submit">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="container">
+            <p style="color:gray">Page {{page}} of {{totalPages}}</p>
+            {{#if hasPrevPage}}
+            <a tyle="text-decoration: none; " class="btn btn-secondary" href="http://localhost:8080/api/products//?page={{prevPage}}">Previous</a>
+            {{/if}}
             
+            {{#if hasNextPage}}
+            <a style="text-decoration: none; " class="btn btn-secondary" href="http://localhost:8080/api/products//?page={{nextPage}}">Next</a>
+            {{/if}}
     </div>
-
-    <div class="sort-buttons">
-        <a href="http://localhost:8080/api/products/?sort=price_asc" class="btn">Min-Max price</a>
-        <a href="http://localhost:8080/api/products/?sort=price_desc" class="btn">Max-Min price</a>
-    </div>
-
-    </div>
-    <ul style="list-style-type: none">
-        {{#each products}}
-            <li>
-                <form action="http://localhost:8080/api/products/{{this._id}}" method="GET">
-                    <button type="submit">{{this.title}}</button>
-                </form>
-            </li>
-            <li>{{this.description}}</li>
-            <li>{{this.code}}</li>
-            <li>${{this.price}}</li>
-            <li>{{this.status}}</li>
-            <li>{{this.stock}}</li>
-            <li>{{this.category}}</li>
-            <li>
-                <img src="{{this.image}}" alt="{{this.title}}" width="100" height="100">
-            </li>
-            <li>
-                <form onsubmit="event.preventDefault(); addToCart('{{this._id}}')">
-                    <input id="cartId-{{this._id}}" placeholder="Insert cart Id" required>
-                    <button type="submit">Add to Cart</button>
-                </form>
-             </li>
-</form>
-
-        {{/each}}
-    </ul>
 </div>
-<p>Page {{page}} of {{totalPages}}</p>
-{{#if hasPrevPage}}
-<a href="http://localhost:8080/api/products//?page={{prevPage}}">Previous</a>
-{{/if}}
-
-{{#if hasNextPage}}
-<a href="http://localhost:8080/api/products//?page={{nextPage}}">Next</a>
-{{/if}}
 
 <script>
 async function addToCart(productId) {
