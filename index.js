@@ -1,41 +1,34 @@
 import express from "express";
-import http from "http";
+import "dotenv/config.js"
 import { engine } from "express-handlebars";
-import viewsRouter from "./src/routes/api/views.router.js";
-import productsDBRouter from "./src/routes/api/productsDB.router.js"
-import cartsDBRouter from "./src/routes/api/cartsDB.router.js"
+import MongoStore from "connect-mongo";
+import router from "./src/routes/index.router.js"
 import path from 'path';
 import __dirname from "./src/utils/dirname.js";
-import Handlebars from "handlebars";
-import dotenv from "dotenv";
 import connectMongoDB from "./src/helpers/dbConnect.helper.js";
 import methodOverride from "method-override";
+import errorHandler from "./src/middlewares/errorHandler.mid.js";
+import pathHandler from "./src/middlewares/pathHandler.mid.js";
 
-
-
-//Initialize environment variables
-dotenv.config();
-
-
-const app = express();
-const server = http.createServer(app);
-
+const server = express();
 const PORT = 8080;
 
-app.use(express.urlencoded({extended:true}));
+const ready = () =>{
+    console.log("Server ready on port" + PORT);
+    connectMongoDB();
+}
 
-app.use(express.json());
-
-app.use(express.static("public"));
-
-app.use(methodOverride('_method'));
-
-connectMongoDB();
+server.listen(PORT, ready);
 
 //Handlebars config
-app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
-app.set('views', path.join(__dirname, '/src/views'));
+server.engine("handlebars", engine());
+server.set("view engine", "handlebars");
+server.set('views', path.join(__dirname, '/src/views'));
+
+//Middlewares
+server.use(express.static("public"));
+server.use(express.urlencoded({extended:true}));
+server.use(express.json());
 
 // Register the ifEquals helper
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
@@ -43,14 +36,8 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 });
 
 //endpoints
-
-app.use("/", viewsRouter);
-
-//MongoDB
-app.use("/api/products", productsDBRouter);
-app.use("/api/carts", cartsDBRouter);
+server.use("/", router);
+server.use(errorHandler);
+server.use(pathHandler);
 
 
-app.listen(PORT, ()=>{
-    console.log("Servidor iniciado en: http://localhost:8080");
-});
