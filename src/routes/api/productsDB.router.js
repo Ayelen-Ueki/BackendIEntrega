@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import Product from "../models/products.model.js";
+import Product from "../../data/mongo/models/products.model.js";
 
 const productsDBRouter = express.Router();
 

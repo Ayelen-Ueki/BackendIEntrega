@@ -1,5 +1,5 @@
 import express from "express";
-import Cart from "../models/carts.model.js";
+import Cart from "../../data/mongo/models/carts.model.js";
 
 const cartsDBRouter = express.Router();
 

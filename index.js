@@ -1,14 +1,14 @@
 import express from "express";
 import http from "http";
 import { engine } from "express-handlebars";
-import viewsRouter from "./routes/views.router.js";
-import productsDBRouter from "./routes/productsDB.router.js"
-import cartsDBRouter from "./routes/cartsDB.router.js"
+import viewsRouter from "./src/routes/api/views.router.js";
+import productsDBRouter from "./src/routes/api/productsDB.router.js"
+import cartsDBRouter from "./src/routes/api/cartsDB.router.js"
 import path from 'path';
-import __dirname from "./utils/dirname.js";
+import __dirname from "./src/utils/dirname.js";
 import Handlebars from "handlebars";
 import dotenv from "dotenv";
-import connectMongoDB from "./db/db.js";
+import connectMongoDB from "./src/helpers/dbConnect.helper.js";
 import methodOverride from "method-override";
 
 
