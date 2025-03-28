@@ -6,4 +6,4 @@ authRouter.get("/register",(req,res)=>{
     res.render("register");
 })
 
-export default authRouter
+export default authRouter;

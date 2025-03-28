@@ -1,9 +1,9 @@
 import express from "express";
 import Cart from "../../data/mongo/models/carts.model.js";
 
-const cartsDBRouter = express.Router();
+const cartsRouter = express.Router();
 
-cartsDBRouter.get("/", async (req, res)=>{
+cartsRouter.get("/", async (req, res)=>{
     try {
         const carts = await Cart.find().lean();
         res.status(200).render("cart", {carts: carts, title: "Carts"});
@@ -14,7 +14,7 @@ cartsDBRouter.get("/", async (req, res)=>{
 
 
 //To create a new empty cart
-cartsDBRouter.post("/", async(req, res)=>{
+cartsRouter.post("/", async(req, res)=>{
     try {
         const newCart = { 
             products: [], 
@@ -27,7 +27,7 @@ cartsDBRouter.post("/", async(req, res)=>{
 });
 
 //Get cart products by cart id
-cartsDBRouter.get("/:cid",async(req,res)=>{
+cartsRouter.get("/:cid",async(req,res)=>{
     const cid = req.params.cid;
     try {
         const cart = await Cart.findById(cid).populate("products.product").lean();
@@ -40,7 +40,7 @@ cartsDBRouter.get("/:cid",async(req,res)=>{
 
 
 //To add products to selected cart
-cartsDBRouter.put("/:cid",async (req,res)=>{
+cartsRouter.put("/:cid",async (req,res)=>{
     const { cid } = req.params; 
     const { productId } = req.body; 
 
@@ -77,7 +77,7 @@ cartsDBRouter.put("/:cid",async (req,res)=>{
 })
 
 //Update product quantity in a cart
-cartsDBRouter.put("/:cid/products/:pid", async(req,res)=>{
+cartsRouter.put("/:cid/products/:pid", async(req,res)=>{
     try {
         const {cid, pid} = req.params;
 
@@ -108,7 +108,7 @@ cartsDBRouter.put("/:cid/products/:pid", async(req,res)=>{
 })
 
 //Delete all products in selected cart
-cartsDBRouter.delete("/:cid",async(req,res)=>{
+cartsRouter.delete("/:cid",async(req,res)=>{
     const cid = req.params.cid;
     try {
         const response = await Cart.findByIdAndUpdate(
@@ -126,7 +126,7 @@ cartsDBRouter.delete("/:cid",async(req,res)=>{
 })
 
 //To delete a product from selected cart
-cartsDBRouter.delete("/:cid/products/:pid", async(req,res)=>{
+cartsRouter.delete("/:cid/products/:pid", async(req,res)=>{
     try {
         const {cid, pid} = req.params;
 
@@ -144,5 +144,5 @@ cartsDBRouter.delete("/:cid/products/:pid", async(req,res)=>{
     }
 })
 
-export default cartsDBRouter;
+export default cartsRouter;
 

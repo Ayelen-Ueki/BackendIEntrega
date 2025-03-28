@@ -2,10 +2,10 @@ import express from "express";
 import multer from "multer";
 import Product from "../../data/mongo/models/products.model.js";
 
-const productsDBRouter = express.Router();
+const productsRouter = express.Router();
 
 //MongoDB
-productsDBRouter.get("/", async (req, res)=>{
+productsRouter.get("/", async (req, res)=>{
     try {
         //Pagination
         const page = parseInt(req.query.page) || 1;
@@ -43,13 +43,13 @@ productsDBRouter.get("/", async (req, res)=>{
 });
 
 //Add new product
-productsDBRouter.get("/AddProduct", (req, res)=>{
+productsRouter.get("/AddProduct", (req, res)=>{
     res.status(200).render("addProduct",{ title: "Add Product"});
 })
 
 const upload = multer();
 
-productsDBRouter.post("/", upload.single("prodImg"), async(req, res)=>{
+productsRouter.post("/", upload.single("prodImg"), async(req, res)=>{
     try {
         const { title, description, code, price, status, stock, category} = req.body;
         if(!title || !code || !price) return res.status(400).send({status: "error", message: "Please, complete all the required fields."})
@@ -64,7 +64,7 @@ productsDBRouter.post("/", upload.single("prodImg"), async(req, res)=>{
 });
 
 //Show product by Id
-productsDBRouter.get("/:pid", async(req, res)=>{
+productsRouter.get("/:pid", async(req, res)=>{
     const pid = req.params.pid;
     try {
         const product = await Product.findById(pid).lean();
@@ -83,7 +83,7 @@ productsDBRouter.get("/:pid", async(req, res)=>{
 
 //To edit product by Id
 
-productsDBRouter.get("/edit/:pid", async (req, res)=>{
+productsRouter.get("/edit/:pid", async (req, res)=>{
     const pid = req.params.pid;
     try {
         const product = await Product.findById(pid).lean();
@@ -102,7 +102,7 @@ productsDBRouter.get("/edit/:pid", async (req, res)=>{
 
 
 
-productsDBRouter.put("/:pid", upload.single("prodImg"), async(req,res)=>{
+productsRouter.put("/:pid", upload.single("prodImg"), async(req,res)=>{
     try {
         const { pid } = req.params;
         const productUpdates = req.body;
@@ -125,7 +125,7 @@ productsDBRouter.put("/:pid", upload.single("prodImg"), async(req,res)=>{
 });
 
 //To delete product by Id
-productsDBRouter.delete("/:pid", async(req,res)=>{
+productsRouter.delete("/:pid", async(req,res)=>{
     try {
         const { pid } = req.params;
 
@@ -137,4 +137,4 @@ productsDBRouter.delete("/:pid", async(req,res)=>{
     }
 });
 
-export default productsDBRouter;
+export default productsRouter;

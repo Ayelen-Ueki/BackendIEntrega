@@ -1,7 +1,8 @@
 import Cart from "./models/carts.model.js";
 import Product from "./models/products.model.js";
-import User from "./models/users.model.js"
+import User from "./models/users.model.js";
 
+//Shared functions on all 3 models
 class Manager{
     constructor(model){
         this.model = model;
