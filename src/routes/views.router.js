@@ -4,6 +4,7 @@ import {
   userManager,
   cartsManager,
 } from "../data/mongo/manager.mongo.js";
+import isUser from "../middlewares/isUser.mid.js";
 
 const viewsRouter = Router();
 
@@ -32,8 +33,17 @@ const loginView = async (req, res) => {
   }
 };
 
+const meView = (req, res) => {
+  try {
+    res.status(200).render("me");
+  } catch (error) {
+    res.status(500).render("Error");
+  }
+};
+
 viewsRouter.get("/", homeView);
 viewsRouter.get("/register", registerView);
 viewsRouter.get("/login", loginView);
+viewsRouter.get("/me", isUser, meView);
 
 export default viewsRouter;
