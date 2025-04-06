@@ -44,6 +44,6 @@ const meView = (req, res) => {
 viewsRouter.get("/", homeView);
 viewsRouter.get("/register", registerView);
 viewsRouter.get("/login", loginView);
-viewsRouter.get("/me", isUser, meView);
+viewsRouter.get("/me", meView);
 
 export default viewsRouter;

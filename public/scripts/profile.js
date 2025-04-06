@@ -1,8 +1,8 @@
-const findUser = async () => {
+const findProfile = async () => {
   try {
     const token = localStorage.getItem("token");
     const opts = {
-      method: "POST",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
       authorization: `Bearer ${token}`,
     };
@@ -21,3 +21,5 @@ const findUser = async () => {
     alert(error.error);
   }
 };
+
+findProfile();
