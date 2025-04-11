@@ -1,6 +1,5 @@
-import Cart from "./models/carts.model.js";
-import Product from "./models/products.model.js";
-import User from "./models/users.model.js";
+import Product from "../models/products.model.js";
+import User from "../models/users.model.js";
 
 //Shared functions on all models
 class Manager {
@@ -19,7 +18,6 @@ class Manager {
 export default Manager;
 
 const productsManager = new Manager(Product);
-const cartsManager = new Manager(Cart);
 const userManager = new Manager(User);
 
-export { productsManager, cartsManager, userManager };
+export { productsManager, userManager };

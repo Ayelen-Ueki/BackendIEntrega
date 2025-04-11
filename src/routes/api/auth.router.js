@@ -1,31 +1,17 @@
-import express from "express";
-import passport from "passport";
-import isUser from "../../middlewares/isUser.mid.js";
+import CustomRouter from "../custom.router.js";
+import passportCb from "../../middlewares/passportCb.mid.js";
+import passport from "../../middlewares/passport.mid.js";
 
-const authRouter = express.Router();
-
-const register = (req, res, next) => {
-  try {
-    res.status(201).json({
-      response: req.user._id,
-      method: req.method,
-      url: req.originalUrl,
-    });
-  } catch (error) {
-    next(error);
-  }
+const register = (req, res) => {
+  const response = req.user;
+  res.json201(response, "Registered");
 };
 
-const login = (req, res, next) => {
-  try {
-    res.status(200).json({
-      response: req.token,
-      method: req.method,
-      url: req.originalUrl,
-    });
-  } catch (error) {
-    next(error);
-  }
+const login = (req, res) => {
+  const response = req.user;
+  const token = req.token;
+  const opts = { maxAge: 60 * 60 * 24 * 7, httoOnly: true };
+  res.cookie("token", token, opts).json200(response, "Logged in");
 };
 
 const me = (req, res, next) => {

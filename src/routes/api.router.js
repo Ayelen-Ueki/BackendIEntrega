@@ -1,15 +1,20 @@
-import { Router } from "express";
-import userRouter from "./api/users.router.js";
+import CustomRouter from "./custom.router.js";
 import productsRouter from "./api/products.router.js";
 import cartsRouter from "./api/carts.router.js";
 import authRouter from "./api/auth.router.js";
+import { Types } from "mongoose";
 
-const apiRouter = Router();
+class ApiRouter extends CustomRouter {
+  constructor() {
+    super();
+    this.init();
+  }
+  init = () => {
+    this.use("/auth", authRouter);
+    this.use("/products", productsRouter);
+    this.use("/carts", cartsRouter);
+  };
+}
 
-// Router handling
-apiRouter.use("/users", userRouter);
-apiRouter.use("/products", productsRouter);
-apiRouter.use("/carts", cartsRouter);
-apiRouter.use("/auth", authRouter);
-
+const apiRouter = new ApiRouter();
 export default apiRouter;
