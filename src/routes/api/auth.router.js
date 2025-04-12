@@ -14,30 +14,55 @@ const login = (req, res) => {
   res.cookie("token", token, opts).json200(response, "Logged in");
 };
 
-const me = (req, res, next) => {
-  try {
-    res.status(200).json({
-      response: { name: req.user.name, avatar: req.user.avatar },
-      method: req.method,
-      url: req.originalUrl,
-    });
-  } catch (error) {
-    next(error);
+const online = (req, res) => {
+  if (!req.user.user_id) {
+    res.json401();
   }
+  res.json200({ user: req.user });
 };
 
-authRouter.get(
-  "/register",
-  passport.authenticate("register", { session: false }),
-  register
-);
+const signout = (req, res) => {
+  res.clearCookie("token").json200(null, "Signed out");
+};
 
-authRouter.post(
-  "/login",
-  passport.authenticate("login", { session: false }),
-  login
-);
+const badAuth = async (req, res) => {
+  res.json401("Bad auth from redirect");
+};
 
-authRouter.get("/me", isUser, me);
+const google = async (req, res) => {
+  const response = req.user;
+  res.json200(response);
+};
 
-export default authRouter;
+class AuthRouter extends CustomRouter {
+  constructor() {
+    super();
+    this.init();
+  }
+  init = () => {
+    this.create("/register", ["PUBLIC"], passportCb("register"), register);
+    this.create("/login", ["PUBLIC"], passportCb("login"), login);
+    this.create("online", ["USER", "ADMIN"], online);
+    this.create("/signout", ["USER", "ADMIN"], signout);
+    this.create("/bad/auth", ["PUBLIC"], badAuth);
+    this.read(
+      "/google",
+      ["PUBLIC"],
+      passport.authenticate("google", {
+        scope: ["email", "profile"],
+        failureRedirect: "/api/auth/bad/auth",
+      })
+    );
+    this.read(
+      "/google/cb",
+      ["PUBLIC"],
+      passport.authenticate("google", {
+        session: false,
+        failureRedirect: "/api/auth/bad/auth",
+      })
+    );
+  };
+}
+
+const authRouter = new AuthRouter();
+export default authRouter.getRouter;
