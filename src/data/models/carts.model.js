@@ -1,6 +1,6 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema, Types, model } from "mongoose";
 
-const cartSchema = new mongoose.Schema(
+const cartSchema = new Schema(
   {
     product_id: { type: Types.ObjectId, ref: "products", required: true },
     user_id: {
@@ -10,7 +10,7 @@ const cartSchema = new mongoose.Schema(
       index: true,
     },
     quantity: { type: Number, default: 1 },
-    status: {
+    state: {
       type: String,
       default: "reserved",
       enum: ["reserved", "paid", "delivered"],
@@ -27,6 +27,6 @@ cartSchema.pre(/^find/, function () {
   );
 });
 
-const Cart = mongoose.model("Cart", cartSchema);
+const Cart = model("Cart", cartSchema);
 
 export default Cart;

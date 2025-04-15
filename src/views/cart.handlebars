@@ -1,19 +1,30 @@
-<div>
-    <div class="container" style="margin: 20px;">
-        <form action="http://localhost:8080/api/carts/" method="POST">
-            <button class="btn btn-primary" type="submit">Create new Cart</button>
-        </form>
-    </div>
-    <div class="container">
-        <ul style="list-style-type: none">
+<main class="d-flex flex-column align-items-center w-100 flex-grow-1">
+    <h1 class="bg-success-subtle p-2 text-center text-success w-100">CART</h1>
+    <table class="m-3 table table-striped" style="width: 380px;">
+        <thead>
+            <tr class="table-success">
+                <th class="p-1" scope="col">Quantity</th>
+                <th class="p-1" scope="col">Title</th>
+                <th class="p-1" scope="col">Price</th>
+                <th class="p-1" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
             {{#each carts}}
-            <li>
-                <form action="http://localhost:8080/api/carts/{{this._id}}" method="GET">
-                    <button class="btn btn-secondary" type="submit">{{this._id}}</button>
-                </form>
-            </li>
-            <br>
+            <tr>
+                <td class="p-1">{{this.quantity}}</td>
+                <td class="p-1">{{this.product_id.title}}</td>
+                <td class="p-1">{{this.product_id.price}}</td>
+                <td class="p-1">
+                    <svg class="remove-from-cart" data-id={{this._id}} xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+                        <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z">
+                        </path>
+                    </svg>
+                </td>
+            </tr>
             {{/each}}
-        </ul>
-    </div>
-</div>
+        </tbody>
+    </table>
+</main>
+<script src="/scripts/cart.js"></script>

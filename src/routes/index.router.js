@@ -13,5 +13,6 @@ class Router extends CustomRouter {
   };
 }
 
-const router = new Router();
+let router = new Router();
+router = router.getRouter();
 export default router;

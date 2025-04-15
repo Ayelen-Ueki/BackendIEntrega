@@ -64,5 +64,6 @@ class AuthRouter extends CustomRouter {
   };
 }
 
-const authRouter = new AuthRouter();
-export default authRouter.getRouter;
+let authRouter = new AuthRouter();
+authRouter = authRouter.getRouter();
+export default authRouter;

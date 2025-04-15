@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     name: { type: String },
     email: { type: String, required: true, unique: true, index: true },
@@ -20,6 +20,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true } //To handle creation Date
 );
 
-const User = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
 
 export default User;

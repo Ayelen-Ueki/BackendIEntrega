@@ -50,58 +50,9 @@
                         <li class="list-group-item">Available stock: {{this.stock}}</li>
                         <li class="list-group-item">Category: {{this.category}}</li>
                     </ul>
-                    <div class="card-body">
-                        <form onsubmit="event.preventDefault(); addToCart('{{this._id}}')">
-                            <input style="margin-bottom: 5px" id="cartId-{{this._id}}" placeholder="Insert cart Id"
-                                required>
-                            <button class="btn btn-success" type="submit">Add to Cart</button>
-                        </form>
-                    </div>
                 </div>
             </div>
             {{/each}}
         </div>
     </div>
-    <div class="container">
-            <p style="color:gray">Page {{page}} of {{totalPages}}</p>
-            {{#if hasPrevPage}}
-            <a tyle="text-decoration: none; " class="btn btn-secondary" href="http://localhost:8080/api/products//?page={{prevPage}}">Previous</a>
-            {{/if}}
-            
-            {{#if hasNextPage}}
-            <a style="text-decoration: none; " class="btn btn-secondary" href="http://localhost:8080/api/products//?page={{nextPage}}">Next</a>
-            {{/if}}
-    </div>
 </div>
-
-<script>
-async function addToCart(productId) {
-    console.log("addToCart function called with productId:", productId);
-    const cartId = document.getElementById(`cartId-${productId}`).value;
-    console.log("Cart ID:", cartId, "Product ID:", productId);
-    if (!cartId) {
-        alert('Please provide a Cart ID');
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost:8080/api/carts/${cartId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ productId }),
-        });
-
-        const result = await response.json();
-        console.log("Response:", result); 
-        if (response.ok) {
-            alert('Product added to cart!');
-        } else {
-            alert(result.message);
-        }
-    } catch (error) {
-        console.error('Error adding product to cart:', error);
-    }
-}
-</script>

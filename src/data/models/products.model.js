@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
-import paginate from "mongoose-paginate-v2";
+import { Schema, Types, model } from "mongoose";
 
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
   //Schema config object
   title: {
     type: String,
@@ -33,12 +32,10 @@ const productSchema = new mongoose.Schema({
   owner_id: { type: Types.ObjectId, ref: "users", index: true },
 });
 
-productSchema.plugin(paginate);
-
 productSchema.pre(/^find/, function () {
   this.populate("owner_id", "email avatar");
 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product = model("Product", productSchema);
 
 export default Product;
