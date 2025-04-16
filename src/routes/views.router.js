@@ -8,19 +8,18 @@ import { cartsManager } from "../data/managers/carts.mongo.js";
 //Handles handlebars views to display
 const homeView = async (req, res) => {
   try {
-    res.status(200).render("home");
+    res.renderView("home", 200);
   } catch (error) {
-    res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
 const productsView = async (req, res) => {
   try {
     const products = await productsManager.readAll();
-    return res.status(200).render("products", { products, title: "PRODUCTS" });
+    res.renderView("products", 200, { products, title: "PRODUCTS" });
   } catch (error) {
-    console.log(error);
-    return res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
@@ -28,10 +27,9 @@ const profileView = async (req, res) => {
   try {
     const { user_id } = req.params;
     const profile = await userManager.readById(user_id);
-    return res.status(200).render("profile", { profile, title: "PROFILE" });
+    res.renderView("profile", 200, { profile, title: "PROFILE" });
   } catch (error) {
-    console.log(error);
-    return res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
@@ -39,12 +37,12 @@ const detailsView = async (req, res) => {
   try {
     const { product_id } = req.params;
     const product = await productsManager.readById(product_id);
-    return res
-      .status(200)
-      .render("product", { product, title: product.title.toUpperCase() });
+    res.renderView("product", 200, {
+      product,
+      title: product.title.toUpperCase(),
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
@@ -52,26 +50,25 @@ const cartView = async (req, res) => {
   try {
     const { user_id } = req.params;
     const cart = await cartsManager.readProductsFromUser(user_id);
-    return res.status(200).render("cart", { cart, title: "CART" });
+    res.renderView("cart", 200, { cart, title: "CART" });
   } catch (error) {
-    console.log(error);
-    return res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
 const registerView = async (req, res) => {
   try {
-    res.status(200).render("register");
+    res.renderView("register", 200);
   } catch (error) {
-    res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
 const loginView = async (req, res) => {
   try {
-    res.status(200).render("login");
+    res.renderView("login", 200);
   } catch (error) {
-    res.status(500).render("error");
+    res.renderView("error", 500);
   }
 };
 
@@ -81,16 +78,16 @@ class ViewsRouter extends CustomRouter {
     this.init();
   }
   init = () => {
-    this.use("/", homeView);
-    this.use("/products", productsView);
-    this.use("/products/:product_id", detailsView);
-    this.use("/profile/:user_id", profileView);
-    this.use("/cart/:user_id", cartView);
-    this.use("/register", registerView);
-    this.use("/login", loginView);
+    this.read("/", ["PUBLIC"], homeView);
+    this.read("/products", ["PUBLIC"], productsView);
+    this.read("/products/:product_id", ["PUBLIC"], detailsView);
+    this.read("/profile/:user_id", ["USER", "ADMIN"], profileView);
+    this.read("/cart/:user_id", ["USER", "ADMIN"], cartView);
+    this.read("/register", ["PUBLIC"], registerView);
+    this.read("/login", ["PUBLIC"], loginView);
   };
 }
 
-const viewsRouter = new ViewsRouter();
-
+let viewsRouter = new ViewsRouter();
+viewsRouter = viewsRouter.getRouter();
 export default viewsRouter;

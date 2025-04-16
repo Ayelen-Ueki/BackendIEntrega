@@ -22,44 +22,14 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="http://localhost:8080">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/api/products/">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/api/carts/">Carts</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Authentication
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/register">Register</a></li>
-                        <li><a class="dropdown-item" href="/login">Login</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/me">Profile</a></li>
-                        <button>Sign out</button>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </form>
+            <div class="navbar-nav" id="opts">
+            </div>
         </div>
     </div>
 </nav>
 </nav>
 <body class="{{bodyClass}}" style="margin: 5px">
     {{{body}}}
+    <script src="/scripts/navbar.js"></script>
 </body>
 </html>

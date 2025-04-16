@@ -17,6 +17,8 @@ const setupResponses = (req, res, next) => {
       error.statusCode = code;
       throw error;
     };
+    res.renderView = (view, status = 200, data = {}) =>
+      res.status(status).render(view, { ...data, method, url });
     res.json200 = (response, message) =>
       successResponse(200, response, message);
     res.json201 = (response, message) =>
