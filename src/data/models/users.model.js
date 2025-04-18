@@ -4,7 +4,6 @@ const userSchema = new Schema(
   {
     name: { type: String },
     email: { type: String, required: true, unique: true, index: true },
-    birthday: { type: Date, required: true },
     avatar: {
       type: String,
       default: "https://ar.pinterest.com/pin/519110294568271513/", //Image from Pinterest

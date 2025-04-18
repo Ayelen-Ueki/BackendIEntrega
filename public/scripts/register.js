@@ -3,7 +3,6 @@ document.querySelector("#register").addEventListener("click", async () => {
     const data = {
       name: document.querySelector("#name").value,
       email: document.querySelector("#email").value,
-      birthday: document.querySelector("#birthday").value,
       password: document.querySelector("#password").value,
     };
     const opts = {

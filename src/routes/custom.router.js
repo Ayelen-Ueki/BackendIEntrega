@@ -8,14 +8,15 @@ class CustomRouter {
     this.use(setupResponses);
   }
   getRouter = () => this.router;
-  applyMiddlewares = (cbs) =>
-    cbs.map((cb) => async (req, res, next) => {
+  applyMiddlewares = (cbs) => {
+    return cbs.map((cb) => async (req, res, next) => {
       try {
         await cb(req, res, next);
       } catch (error) {
         next(error);
       }
     });
+  };
   create = (path, policies, ...cbs) =>
     this.router.post(path, setupPolicies(policies), this.applyMiddlewares(cbs));
   read = (path, policies, ...cbs) =>
