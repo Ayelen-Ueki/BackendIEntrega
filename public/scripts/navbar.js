@@ -2,13 +2,12 @@ const selector = document.querySelector("#opts");
 const token = localStorage.getItem("token");
 
 // Change the navbar depending on user signed in/out
-
 const isOnline = async () => {
   try {
     if (token) {
       const opts = {
         method: "POST",
-        heathers: {
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
