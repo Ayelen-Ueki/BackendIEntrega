@@ -2,26 +2,26 @@ import CustomRouter from "../custom.router.js";
 import passportCb from "../../middlewares/passportCb.mid.js";
 import passport from "../../middlewares/passport.mid.js";
 
-const register = (req, res) => {
+const register = async (req, res) => {
   const response = req.user;
   res.json201(response, "Registered");
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
   const response = req.user;
   const token = req.token;
   const opts = { maxAge: 60 * 60 * 24 * 7, httoOnly: true };
   res.cookie("token", token, opts).json200(response, "Logged in");
 };
 
-const online = (req, res) => {
+const online = async (req, res) => {
   if (!req.user.user_id) {
     res.json401();
   }
   res.json200({ user: req.user });
 };
 
-const signout = (req, res) => {
+const signout = async (req, res) => {
   res.clearCookie("token").json200(null, "Signed out");
 };
 

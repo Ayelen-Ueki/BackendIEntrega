@@ -15,5 +15,6 @@ class ApiRouter extends CustomRouter {
   };
 }
 
-const apiRouter = new ApiRouter();
+let apiRouter = new ApiRouter();
+apiRouter = apiRouter.getRouter();
 export default apiRouter;

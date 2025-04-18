@@ -20,7 +20,6 @@ document.querySelector("#register").addEventListener("click", async () => {
       location.replace("/login");
     }
   } catch (error) {
-    console.log(error);
     alert(error.error);
   }
 });
