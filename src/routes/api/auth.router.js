@@ -11,7 +11,9 @@ const login = async (req, res) => {
   const response = req.user;
   const token = req.token;
   const opts = { maxAge: 60 * 60 * 24 * 7, httoOnly: true };
-  res.cookie("token", token, opts).json200(response, "Logged in");
+  res
+    .cookie("token", token, opts)
+    .json200({ response, token, opts }, "Logged in");
 };
 
 const online = async (req, res) => {

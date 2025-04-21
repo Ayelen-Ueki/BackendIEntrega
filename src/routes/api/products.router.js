@@ -1,9 +1,16 @@
 import CustomRouter from "../custom.router.js";
 import { productsManager } from "../../data/managers/manager.mongo.js";
 import { Types } from "mongoose";
+import multer from "multer";
+import path from "path";
+import __dirname from "../../utils/dirname.js";
 
 const createOne = async (req, res) => {
   const data = req.body;
+  // Handle image if uploaded
+  if (req.file) {
+    data.imageUrl = `/img/${req.file.filename}`;
+  }
   const one = await productsManager.createOne(data);
   res.json201(one);
 };
