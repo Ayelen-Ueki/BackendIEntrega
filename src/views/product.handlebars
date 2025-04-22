@@ -1,23 +1,5 @@
-<div class="container">
+<div class="container" id="productDetail">
     <div class="row">
-        <div class="col-3 mb-4">
-            <div class="card" style="width: 100%;">
-                <img class="card-img-top" src="{{product.image}}" alt="{{product.title}}">
-                <div class="card-body">
-                    <h2>
-                        <a style="text-decoration: none; color: brown;"
-                            href="http://localhost:8080/api/products/{{product._id}}">{{product.title}}</a>
-                    </h2>
-                    <p>{{product.description}}</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Price: ${{product.price}}</li>
-                    <li class="list-group-item">Available stock: {{product.stock}}</li>
-                    <li class="list-group-item">Category: {{product.category}}</li>
-                </ul>
-                <button id={{product._id}} class="btn btn-success">+ Cart</button>
-            </div>
-        </div>
     </div>
 </div>
 
